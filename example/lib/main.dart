@@ -101,9 +101,13 @@ class _MyHomePageState extends State<MyHomePage> {
               outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToRight(),
             ),
             const Expanded(child: SizedBox(),),
-            ElevatedButton(child: const Text('Samples'), onPressed: () {
-              Navigator.of(context).push(Samples.route());
-            }),
+            WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects(delay: const Duration(milliseconds: 1500), offset: Offset(0, -30), curve: Curves.bounceOut, duration: Duration(milliseconds: 900)),
+              atRestEffect: WidgetRestingEffects.wave(),
+              child: ElevatedButton(child: const Text('Samples'), onPressed: () {
+                Navigator.of(context).push(Samples.route());
+              }),
+            ),
             const SizedBox(height: 20,)
           ],
         ),
