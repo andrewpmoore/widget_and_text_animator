@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 class Samples extends StatelessWidget {
@@ -28,6 +29,8 @@ class Samples extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20,),
+              WidgetAnimator(child: Text('WidgetAnimator', style: Theme.of(context).textTheme.headline5),incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600)),),
+              const SizedBox(height: 10,),
               WidgetAnimator(child: ElevatedButton(onPressed: () {
                 Navigator.of(context).push(SamplesIncoming.route());
               }, child: const Text('Incoming animations')), incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 300)),),
@@ -37,6 +40,12 @@ class Samples extends StatelessWidget {
               WidgetAnimator(child: ElevatedButton(onPressed: () {
                 Navigator.of(context).push(SamplesOutgoing.route());
               }, child: const Text('Outgoing animations')), incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 900)),),
+              const SizedBox(height: 30,),
+              TextAnimator('TextAnimator', initialDelay: const Duration(milliseconds: 1200),style: Theme.of(context).textTheme.headline5,incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+              const SizedBox(height: 10,),
+              WidgetAnimator(child: ElevatedButton(onPressed: () {
+                Navigator.of(context).push(SamplesText.route());
+              }, child: const Text('Text animations')), incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1500)),),
             ],
           ),
         ),
@@ -907,7 +916,7 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
     Center(
       key: const ValueKey('1a'),
       child: WidgetAnimator(
-        atRestEffect: WidgetRestingEffects.dangle(numberOfPlays: 3, effectStrength: 0.5, duration: Duration(milliseconds: 750)),
+        atRestEffect: WidgetRestingEffects.dangle(numberOfPlays: 3, effectStrength: 0.5, duration: const Duration(milliseconds: 750)),
         child: Container(width: 200, height: 200, color: Colors.redAccent, child: const Center(child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Text('WidgetRestingEffects.dangle, repeat 3 times, half effect strength, faster'),
@@ -1014,7 +1023,7 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
             )), ),
           ),
           WidgetAnimator(
-            atRestEffect: WidgetRestingEffects.wave(effectStrength: 16, duration: Duration(milliseconds: 3000)),
+            atRestEffect: WidgetRestingEffects.wave(effectStrength: 16, duration: const Duration(milliseconds: 3000)),
             child: Container(width: 100, height: 100, color: Colors.blueAccent, child: const Center(child: Padding(
               padding: EdgeInsets.all(8.0),
             )), ),
@@ -1045,7 +1054,7 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
     Center(
       key: const ValueKey('11'),
       child: WidgetAnimator(
-        atRestEffect: WidgetRestingEffects.vibrate(duration: Duration(milliseconds: 120), effectStrength: 1.3),
+        atRestEffect: WidgetRestingEffects.vibrate(duration: const Duration(milliseconds: 120), effectStrength: 1.3),
         child: Container(width: 200, height: 200, color: Colors.blueAccent, child: const Center(child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Text('WidgetRestingEffects.vibrate with custom values'),
@@ -1212,6 +1221,494 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
                 child: OutlinedButton(onPressed: (){
                   setState(() {
                     currentPage==widgetList.length-1 ? currentPage = 0 : currentPage = currentPage + 1;
+                  });
+                }, child: const Text('Next')),
+              ),
+            ],),
+          const SizedBox(height: 20,),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class SamplesText extends StatefulWidget {
+  const SamplesText({Key? key}) : super(key: key);
+
+  static Route<dynamic> route() {
+
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return const SamplesText();
+    });
+  }
+
+  @override
+  State<SamplesText> createState() => _SamplesTextState();
+}
+
+
+class _SampleTextSettings{
+  String text;
+  WidgetTransitionEffects incomingEffect;
+  WidgetTransitionEffects outgoingEffect;
+  WidgetRestingEffects atRestEffect;
+  int maxLines;
+  TextAlign textAlign;
+  TextStyle style;
+  Duration initialDelay;
+  Duration characterDelay;
+  Duration spaceDelay;
+
+  _SampleTextSettings(
+      { required this.text, required this.incomingEffect, required this.outgoingEffect, required this.atRestEffect, required this.maxLines,
+        required this.textAlign, required this.style, required this.initialDelay, required this.characterDelay, required this.spaceDelay});
+}
+
+
+class _SamplesTextState extends State<SamplesText> {
+
+  int currentPage = 0;
+
+  List<_SampleTextSettings> _settingsList = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample one',
+      incomingEffect: WidgetTransitionEffects.incomingScaleDown(),
+      outgoingEffect: WidgetTransitionEffects.outgoingScaleUp(),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.lato(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -4, fontSize: 48)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 100),
+      characterDelay: const Duration(milliseconds: 100),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample two',
+      incomingEffect: WidgetTransitionEffects.incomingScaleUp(),
+      outgoingEffect: WidgetTransitionEffects.outgoingScaleDown(),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.monteCarlo(textStyle: const TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0, fontSize: 48)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 85),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample three',
+      incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(),
+      outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToLeft(),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.abel(textStyle: const TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0, fontSize: 48)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 85),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample four',
+      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
+      outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.abrilFatface(textStyle: const TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0, fontSize: 48)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 85),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Five',
+      incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(),
+      outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.roboto(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -5, fontSize: 60)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 300),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Six',
+      incomingEffect: WidgetTransitionEffects(blur: Offset(10, 0), duration: Duration(milliseconds: 1200)),
+      outgoingEffect: WidgetTransitionEffects(blur: Offset(0, 10)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.readexPro(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 600),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Seven',
+      incomingEffect: WidgetTransitionEffects(blur: Offset(10, 10), duration: Duration(milliseconds: 1200)),
+      outgoingEffect: WidgetTransitionEffects(blur: Offset(10, 10)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.ramaraja(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 600),
+      characterDelay: const Duration(milliseconds: 50),
+      maxLines: 3,
+    ));
+
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Eight',
+      incomingEffect: WidgetTransitionEffects(rotation: math.pi/3),
+      outgoingEffect: WidgetTransitionEffects(rotation: -math.pi/2.5),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.shipporiMincho(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 600),
+      characterDelay: const Duration(milliseconds: 80),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Nine',
+      incomingEffect: WidgetTransitionEffects(rotation: math.pi/4, curve: Curves.easeOut, duration: Duration(milliseconds: 900)),
+      outgoingEffect: WidgetTransitionEffects(rotation: -math.pi/7.5, curve: Curves.easeIn, duration: Duration(milliseconds: 900)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.convergence(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 600),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Ten',
+      incomingEffect: WidgetTransitionEffects(skew: Offset(0.3, 0), curve: Curves.easeOut, duration: Duration(milliseconds: 900)),
+      outgoingEffect: WidgetTransitionEffects(skew: Offset(-1, 0), curve: Curves.easeIn, duration: Duration(milliseconds: 900)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.cutive(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 600),
+      characterDelay: const Duration(milliseconds: 120),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Eleven',
+      incomingEffect: WidgetTransitionEffects(offset: Offset(-60, 0), blur: Offset(10,0), curve: Curves.easeInOut, duration: Duration(milliseconds: 400)),
+      outgoingEffect: WidgetTransitionEffects(offset: Offset(60, 0), blur: Offset(10,0), curve: Curves.easeIn, duration: Duration(milliseconds: 400)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.bentham(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 300),
+      characterDelay: const Duration(milliseconds: 60),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twelve',
+      incomingEffect: WidgetTransitionEffects(offset: Offset(0, 80), blur: Offset(0,20), curve: Curves.easeInOut, duration: Duration(milliseconds: 300)),
+      outgoingEffect: WidgetTransitionEffects(offset: Offset(0, 80), blur: Offset(0,20), curve: Curves.easeIn, duration: Duration(milliseconds: 300)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.prozaLibre(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 60),
+      characterDelay: const Duration(milliseconds: 60),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Thirteen',
+      incomingEffect: WidgetTransitionEffects(offset: Offset(20, 20), scale: 0.5, rotation: math.pi/10, curve: Curves.easeInOut, duration: Duration(milliseconds: 300)),
+      outgoingEffect: WidgetTransitionEffects(offset: Offset(60, 60), scale: 0.5, rotation: -math.pi/10, curve: Curves.easeIn, duration: Duration(milliseconds: 300)),
+      atRestEffect: WidgetRestingEffects.none(),
+      style: GoogleFonts.farro(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 260),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Fourteen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.bounce(),
+      style: GoogleFonts.calistoga(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 400),
+      characterDelay: const Duration(milliseconds: 00),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Fifteen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.bounce(),
+      style: GoogleFonts.caladea(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 100),
+      characterDelay: const Duration(milliseconds: 100),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Sixteen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.vibrate(effectStrength: 0.3),
+      style: GoogleFonts.baloo2(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 50)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 100),
+      characterDelay: const Duration(milliseconds: 20),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Seventeen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.wave(effectStrength: 2),
+      style: GoogleFonts.atma(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 60),
+      characterDelay: const Duration(milliseconds: 60),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Eighteen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.size(),
+      style: GoogleFonts.atma(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 80),
+      characterDelay: const Duration(milliseconds: 80),
+      maxLines: 3,
+    ));
+
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Nineteen',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.size(effectStrength: 1.2),
+      style: GoogleFonts.scopeOne(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 400),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.rotate(),
+      style: GoogleFonts.inder(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 400),
+      characterDelay: const Duration(milliseconds: 20),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty One',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.swing(),
+      style: GoogleFonts.reggaeOne(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 0),
+      characterDelay: const Duration(milliseconds: 35),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty Two',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.swing(effectStrength: 2),
+      style: GoogleFonts.italiana(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 400),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty Three',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.7),
+      style: GoogleFonts.vastShadow(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 100),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty Four',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.fidget(),
+      style: GoogleFonts.craftyGirls(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 100),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty Five',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.dangle(effectStrength: 2),
+      style: GoogleFonts.montserrat(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 200),
+      characterDelay: const Duration(milliseconds: 150),
+      maxLines: 3,
+    ));
+
+    _settingsList.add(_SampleTextSettings(
+      text: 'Sample Twenty Six',
+      incomingEffect: WidgetTransitionEffects(),
+      outgoingEffect: WidgetTransitionEffects(),
+      atRestEffect: WidgetRestingEffects.slide(effectStrength: 2),
+      style: GoogleFonts.poppins(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 4, fontSize: 40)),
+      textAlign: TextAlign.center,
+      initialDelay: const Duration(milliseconds: 0),
+      spaceDelay: const Duration(milliseconds: 0),
+      characterDelay: const Duration(milliseconds: 0),
+      maxLines: 3,
+    ));
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Text Samples'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: (){
+                setState(() {
+                  currentPage==_settingsList.length-1 ? currentPage = 0 : currentPage = currentPage + 1;
+                });
+              },
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextAnimator(_settingsList[currentPage].text,
+                    incomingEffect: _settingsList[currentPage].incomingEffect,
+                    outgoingEffect: _settingsList[currentPage].outgoingEffect,
+                    atRestEffect: _settingsList[currentPage].atRestEffect,
+                    style: _settingsList[currentPage].style,
+                    textAlign: _settingsList[currentPage].textAlign,
+                    initialDelay: _settingsList[currentPage].initialDelay,
+                    spaceDelay: _settingsList[currentPage].spaceDelay,
+                    characterDelay: _settingsList[currentPage].characterDelay,
+                    maxLines: _settingsList[currentPage].maxLines
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              WidgetAnimator(
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600),curve: Curves.easeOut),
+                child: OutlinedButton(onPressed: (){
+                  setState(() {
+                    currentPage== 0 ? currentPage = _settingsList.length-1 : currentPage = currentPage - 1;
+                  });
+                }, child: const Text('Previous')),
+              ),
+              WidgetAnimator(
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                child: OutlinedButton(onPressed: (){
+                  setState(() {
+                    currentPage==_settingsList.length-1 ? currentPage = 0 : currentPage = currentPage + 1;
                   });
                 }, child: const Text('Next')),
               ),

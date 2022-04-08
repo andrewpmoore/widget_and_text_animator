@@ -64,6 +64,8 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
   Widget? childToDisplay;
   Widget? childToHold;
+  WidgetTransitionEffects? outgoingTransitionToHold;
+  WidgetTransitionEffects? outgoingTransitionToDisplay;
 
   Key? widgetKey;
 
@@ -87,6 +89,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
     widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
     childToDisplay = widget.child;
+    outgoingTransitionToDisplay = widget.outgoingEffect;
 
     _addAnimationListener();
     _initIncoming();
@@ -123,6 +126,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
       } else if (widgetAnimationStatus == _WidgetAnimationStatus.outgoing) {
         if (status == AnimationStatus.completed) {
           childToDisplay = childToHold;
+          outgoingTransitionToDisplay = outgoingTransitionToHold;
           _initIncoming();
           if (widget.onOutgoingAnimationComplete!=null && widget.child!=null) {
             widget.onOutgoingAnimationComplete!(widget.child?.key);
@@ -272,7 +276,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   }
 
   void _initOutgoing() async{
-    WidgetTransitionEffects outgoingEffect = widget.outgoingEffect ?? WidgetTransitionEffects(opacity: 1, duration: const Duration(milliseconds: 1));
+    WidgetTransitionEffects outgoingEffect = outgoingTransitionToDisplay ?? WidgetTransitionEffects(opacity: 1, duration: const Duration(milliseconds: 1));
     Duration outgoingDuration = outgoingEffect.duration ??  const Duration(milliseconds: 300);
     Curve outgoingCurve = outgoingEffect.curve ?? Curves.easeInOut;
     setState(() {
@@ -307,6 +311,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     setState(() {
       widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
       childToHold = widget.child;
+      outgoingTransitionToHold = widget.outgoingEffect;
     });
     _initOutgoing();
   }
@@ -553,6 +558,8 @@ class WidgetRestingEffects{
   WidgetRestingEffects.fidget({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.fidget;
   WidgetRestingEffects.dangle({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.dangle;
   WidgetRestingEffects.vibrate({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.vibrate;
+  WidgetRestingEffects.none({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.none;
+
 
 
   @override
