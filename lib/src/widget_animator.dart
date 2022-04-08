@@ -315,8 +315,8 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
 
-
-    if ((widget.child?.key??const ValueKey('default-widget-animator-key'))!=widgetKey){
+    Key widgetChild = widget.child?.key??const ValueKey('default-widget-animator-key');
+    if ((widgetChild!=widgetKey)||(widget.child.runtimeType!=childToDisplay.runtimeType)){
       _widgetChanged();
     }
 

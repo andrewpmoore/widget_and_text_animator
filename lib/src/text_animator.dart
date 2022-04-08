@@ -15,7 +15,7 @@ class TextAnimator extends StatefulWidget {
   final Duration? characterDelay;
   final Duration? spaceDelay;
 
-  const TextAnimator({Key? key, required this.text, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.onIncomingAnimationComplete, this.atRestEffects, this.onOutgoingAnimationComplete, this.maxLines, this.textAlign, this.style, this.initialDelay, this.characterDelay, this.spaceDelay}) : super(key: key);
+  const TextAnimator(this.text, {Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.onIncomingAnimationComplete, this.atRestEffects, this.onOutgoingAnimationComplete, this.maxLines, this.textAlign, this.style, this.initialDelay, this.characterDelay, this.spaceDelay}) : super(key: key);
 
   final WidgetRestingEffects? atRestEffect;
 
