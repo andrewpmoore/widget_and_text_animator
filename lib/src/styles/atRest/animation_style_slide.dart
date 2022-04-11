@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-import '../widget_animator.dart';
-import 'animation_settings.dart';
-import 'animation_style.dart';
+import '../../widget_animator.dart';
+import '../animation_settings.dart';
+import '../animation_style.dart';
 
-class AnimationStyleDangle extends AnimationStyle{
+class AnimationStyleSlide extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {
 
@@ -12,9 +12,8 @@ class AnimationStyleDangle extends AnimationStyle{
 
     double skewAmount = 0.2;
 
-    skewAmount = (skewAmount*effects.effectStrength!);
-    _animationSettings.skewAlignment = Alignment.topCenter;
-
+    skewAmount = (skewAmount*effects.effectStrength!); //.clamp(-100, 100);
+    _animationSettings.skewAlignment = Alignment.center;
     _animationSettings.skewXAnimation = TweenSequence<double>(
       <TweenSequenceItem<double>>[
         TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: skewAmount).chain(CurveTween(curve: Curves.linear)),weight: 25.0,),

@@ -2,11 +2,11 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/widgets.dart';
 
-import '../widget_animator.dart';
-import 'animation_settings.dart';
-import 'animation_style.dart';
+import '../../widget_animator.dart';
+import '../animation_settings.dart';
+import '../animation_style.dart';
 
-class AnimationStyleWave extends AnimationStyle{
+class AnimationStyleWave extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {
 

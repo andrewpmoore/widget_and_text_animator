@@ -70,9 +70,9 @@ class _TextAnimatorState extends State<TextAnimator> {
   void _textChangedOutgoing() async{
     //mark as outgoing, this will force the animation to rebuild but with only the outgoing animation set, but keeping the same text
     _outgoing = true;
-    setState(() {
-
-    });
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _textChangedReplaced(Key? p1) async{
@@ -80,8 +80,9 @@ class _TextAnimatorState extends State<TextAnimator> {
     _outgoing = false;
     _text = widget.text;
     _initWords();
-    setState(() {
-    });
+    if (mounted) {
+      setState(() {});
+    }
 
 
 
@@ -108,7 +109,7 @@ class _TextAnimatorState extends State<TextAnimator> {
                   children: [
                     for (int j=0; j<(_words[i]).characters.length; j++)
                       WidgetAnimator(
-                          incomingEffect: WidgetTransitionEffects(
+                          incomingEffect: WidgetTransitionEffects.withStyle(
                             opacity: widget.incomingEffect?.opacity,
                             scale: widget.incomingEffect?.scale,
                             offset: widget.incomingEffect?.offset,
@@ -117,6 +118,8 @@ class _TextAnimatorState extends State<TextAnimator> {
                             curve: widget.incomingEffect?.curve,
                             skew: widget.incomingEffect?.skew,
                             duration: widget.incomingEffect?.duration,
+                            builder: widget.incomingEffect?.builder,
+                            style: widget.incomingEffect?.style ?? WidgetTransitionEffectStyle.none,
                             delay: _incomingDelays[i][j],
                           ),
                           outgoingEffect: widget.outgoingEffect,

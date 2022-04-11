@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../widget_and_text_animator.dart';
 
-import '../widget_animator.dart';
-import 'animation_settings.dart';
-
-abstract class AnimationStyle {
+abstract class AnimationAtRestStyle {
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController);
+}
+
+abstract class AnimationTransitionStyle {
+  AnimationSettings getSettings(WidgetTransitionEffects effects, AnimationController animationController);
 }

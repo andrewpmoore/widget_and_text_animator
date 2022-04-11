@@ -1,11 +1,11 @@
 import 'package:flutter/animation.dart';
 import 'dart:math' as math;
 
-import '../widget_animator.dart';
-import 'animation_settings.dart';
-import 'animation_style.dart';
+import '../../widget_animator.dart';
+import '../animation_settings.dart';
+import '../animation_style.dart';
 
-class AnimationStyleRotate extends AnimationStyle{
+class AnimationStyleRotate extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {
 

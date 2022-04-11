@@ -1,20 +1,23 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:widget_and_text_animator/src/styles/transitions/animation_incoming_transition_offset_and_scale.dart';
+import 'package:widget_and_text_animator/src/styles/transitions/animation_incoming_transition_offset_and_scale_and_step.dart';
+import 'package:widget_and_text_animator/src/styles/transitions/animation_outgoing_transition_offset_and_scale.dart';
 
 import 'styles/animation_style_builder.dart';
-import 'styles/animation_style_dangle.dart';
-import 'styles/animation_style_fidget.dart';
-import 'styles/animation_style_none.dart';
-import 'styles/animation_style_pulse.dart';
-import 'styles/animation_style_rotate.dart';
-import 'styles/animation_style_size.dart';
-import 'styles/animation_style_slide.dart';
-import 'styles/animation_style_vibrate.dart';
+import 'styles/atRest/animation_style_dangle.dart';
+import 'styles/atRest/animation_style_fidget.dart';
+import 'styles/atRest/animation_style_none.dart';
+import 'styles/atRest/animation_style_pulse.dart';
+import 'styles/atRest/animation_style_rotate.dart';
+import 'styles/atRest/animation_style_size.dart';
+import 'styles/atRest/animation_style_slide.dart';
+import 'styles/atRest/animation_style_vibrate.dart';
 import 'styles/animation_settings.dart';
-import 'styles/animation_style_bounce.dart';
-import 'styles/animation_style_swing.dart';
-import 'styles/animation_style_wave.dart';
+import 'styles/atRest/animation_style_bounce.dart';
+import 'styles/atRest/animation_style_swing.dart';
+import 'styles/atRest/animation_style_wave.dart';
 
 
 enum _WidgetAnimationStatus {
@@ -34,6 +37,14 @@ enum WidgetRestingEffectStyle {
   fidget,
   dangle,
   vibrate,
+  none
+}
+
+
+enum WidgetTransitionEffectStyle {
+  incomingOffsetAndThenScale,
+  incomingOffsetAndThenScaleAndStep,
+  outgoingOffsetAndThenScale,
   none
 }
 
@@ -111,16 +122,14 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
         if (status == AnimationStatus.completed) {
           atRestNumberOfPlays++;
           int target = widget.atRestEffect?.numberOfPlays ?? 0;
-          if (target > 0) {
-            print('counter is: $atRestNumberOfPlays target is $target');
-          }
+
           if (target <= 0) {
             //if it's set to -1, then repeat forever
             _animationController.forward(from: 0);
           } else if (atRestNumberOfPlays < target) {
             _animationController.forward(from: 0);
           } else {
-            print('this one plays no more ${childToDisplay}');
+            // print('this one plays no more $childToDisplay');
           }
         }
       } else if (widgetAnimationStatus == _WidgetAnimationStatus.outgoing) {
@@ -147,60 +156,86 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     _animationController.value = 0;
     _animationController.duration = Duration(milliseconds: incomingDuration.inMilliseconds + incomingDelay.inMilliseconds);
 
-    _animationSettings.opacityAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 1).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
+    if (incomingEffect.builder!=null){
+      _animationSettings = incomingEffect.builder!(incomingEffect, _animationController);
+    }
+    else if (incomingEffect.style!=WidgetTransitionEffectStyle.none){
+      switch (incomingEffect.style){
+        case WidgetTransitionEffectStyle.incomingOffsetAndThenScale:
+          _animationSettings = AnimationIncomingTransitionOffsetAndScale().getSettings(incomingEffect, _animationController);
+          break;
+        case WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep:
+          _animationSettings = AnimationIncomingTransitionOffsetAndScaleAndStep().getSettings(incomingEffect, _animationController);
+          break;
+        default:
+          break;
+      }
+    }
+    else {
+      _animationSettings.opacityAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 1).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
       ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.scaleAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.scale ?? 0, end: incomingEffect.scale ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.scale ?? 1, end: 1).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.scaleAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.scale ?? 0, end: incomingEffect.scale ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.scale ?? 1, end: 1).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.offsetXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: incomingEffect.offset?.dx ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.offsetXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: incomingEffect.offset?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.offsetYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: incomingEffect.offset?.dy ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.offsetYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: incomingEffect.offset?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.rotationAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: incomingEffect.rotation ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.rotationAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: incomingEffect.rotation ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.blurXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: incomingEffect.blur?.dx ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.blurXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: incomingEffect.blur?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.blurYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: incomingEffect.blur?.dy ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.blurYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: incomingEffect.blur?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    _animationSettings.skewXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: incomingEffect.skew?.dx ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.skewXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: incomingEffect.skew?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
 
-    _animationSettings.skewYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-      if (incomingDelay.inMilliseconds.toDouble()>0) TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: incomingEffect.skew?.dy ?? 0).chain(CurveTween(curve: Curves.ease)),weight: incomingDelay.inMilliseconds.toDouble(),),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)),weight: incomingDuration.inMilliseconds.toDouble()),
-    ],
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.skewYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
+          tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: incomingEffect.skew?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
+        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
+      ],
+      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    }
 
     _animationController.forward();
 
@@ -218,9 +253,11 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     restingEffects.effectStrength = restingEffects.effectStrength ?? 1;
     restingEffects.curve = restingEffects.curve ?? Curves.easeInOut;
 
-    setState(() {
-      widgetAnimationStatus = _WidgetAnimationStatus.rest;
-    });
+    if (mounted) {
+      setState(() {
+        widgetAnimationStatus = _WidgetAnimationStatus.rest;
+      });
+    }
 
 
     _animationController.value = 0;
@@ -279,21 +316,48 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     WidgetTransitionEffects outgoingEffect = outgoingTransitionToDisplay ?? WidgetTransitionEffects(opacity: 1, duration: const Duration(milliseconds: 1));
     Duration outgoingDuration = outgoingEffect.duration ??  const Duration(milliseconds: 300);
     Curve outgoingCurve = outgoingEffect.curve ?? Curves.easeInOut;
-    setState(() {
-      widgetAnimationStatus = _WidgetAnimationStatus.outgoing;
-    });
+    if (mounted) {
+      setState(() {
+        widgetAnimationStatus = _WidgetAnimationStatus.outgoing;
+      });
+    }
 
     _animationController.duration = outgoingDuration;
-    _animationSettings.opacityAnimation = Tween<double>(begin: _animationSettings.opacityAnimation?.value, end: outgoingEffect.opacity ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.scaleAnimation = Tween<double>(begin: _animationSettings.scaleAnimation?.value, end: outgoingEffect.scale ?? 1).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.offsetXAnimation = Tween<double>(begin: _animationSettings.offsetXAnimation?.value, end: outgoingEffect.offset?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.offsetYAnimation = Tween<double>(begin: _animationSettings.offsetYAnimation?.value, end: outgoingEffect.offset?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.rotationAnimation = Tween<double>(begin: _animationSettings.rotationAnimation?.value, end: outgoingEffect.rotation ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.blurXAnimation = Tween<double>(begin: _animationSettings.blurXAnimation?.value, end: outgoingEffect.blur?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.blurYAnimation = Tween<double>(begin: _animationSettings.blurYAnimation?.value, end: outgoingEffect.blur?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.skewXAnimation = Tween<double>(begin: _animationSettings.skewXAnimation?.value, end: outgoingEffect.skew?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationSettings.skewYAnimation = Tween<double>(begin: _animationSettings.skewYAnimation?.value, end: outgoingEffect.skew?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-    _animationController.value = 0;
+
+    if (outgoingEffect.builder!=null){
+      _animationSettings = outgoingEffect.builder!(outgoingEffect, _animationController);
+    }
+    else if (outgoingEffect.style!=WidgetTransitionEffectStyle.none){
+      switch (outgoingEffect.style){
+        case WidgetTransitionEffectStyle.outgoingOffsetAndThenScale:
+          _animationSettings = AnimationOutgoingTransitionOffsetAndScale().getSettings(outgoingEffect, _animationController);
+          break;
+        default:
+          break;
+      }
+    }
+
+    else {
+      _animationSettings.opacityAnimation =
+          Tween<double>(begin: _animationSettings.opacityAnimation?.value, end: outgoingEffect.opacity ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.scaleAnimation =
+          Tween<double>(begin: _animationSettings.scaleAnimation?.value, end: outgoingEffect.scale ?? 1).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.offsetXAnimation =
+          Tween<double>(begin: _animationSettings.offsetXAnimation?.value, end: outgoingEffect.offset?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.offsetYAnimation =
+          Tween<double>(begin: _animationSettings.offsetYAnimation?.value, end: outgoingEffect.offset?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.rotationAnimation =
+          Tween<double>(begin: _animationSettings.rotationAnimation?.value, end: outgoingEffect.rotation ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.blurXAnimation =
+          Tween<double>(begin: _animationSettings.blurXAnimation?.value, end: outgoingEffect.blur?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.blurYAnimation =
+          Tween<double>(begin: _animationSettings.blurYAnimation?.value, end: outgoingEffect.blur?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.skewXAnimation =
+          Tween<double>(begin: _animationSettings.skewXAnimation?.value, end: outgoingEffect.skew?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.skewYAnimation =
+          Tween<double>(begin: _animationSettings.skewYAnimation?.value, end: outgoingEffect.skew?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationController.value = 0;
+    }
 
     _animationController.forward();
 
@@ -308,11 +372,13 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   }
 
   void _widgetChanged(){
-    setState(() {
-      widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
-      childToHold = widget.child;
-      outgoingTransitionToHold = widget.outgoingEffect;
-    });
+    if (mounted) {
+      setState(() {
+        widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
+        childToHold = widget.child;
+        outgoingTransitionToHold = widget.outgoingEffect;
+      });
+    }
     _initOutgoing();
   }
 
@@ -490,26 +556,38 @@ class WidgetTransitionEffects{
   final double? rotation;
   final double? opacity;
   final Curve? curve;
+  TransitionAnimationSettingsBuilder? builder;
   final Duration? duration;
   final Duration? delay;
+
+  final WidgetTransitionEffectStyle style;
 
   static Duration defaultDuration = const Duration(milliseconds: 300);
 
 
-  WidgetTransitionEffects({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay});
-  WidgetTransitionEffects.incomingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3;
-  WidgetTransitionEffects.incomingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0;
-  WidgetTransitionEffects.outgoingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0;
-  WidgetTransitionEffects.outgoingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3;
+  WidgetTransitionEffects.withStyle({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder, required this.style});
 
-  WidgetTransitionEffects.incomingSlideInFromLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0);
-  WidgetTransitionEffects.incomingSlideInFromRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0);
-  WidgetTransitionEffects.incomingSlideInFromTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150);
-  WidgetTransitionEffects.incomingSlideInFromBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150);
-  WidgetTransitionEffects.outgoingSlideOutToLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0);
-  WidgetTransitionEffects.outgoingSlideOutToRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0);
-  WidgetTransitionEffects.outgoingSlideOutToTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150);
-  WidgetTransitionEffects.outgoingSlideOutToBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150);
+  WidgetTransitionEffects({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder}) : style = WidgetTransitionEffectStyle.none;
+
+  WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+  WidgetTransitionEffects.incomingOffsetThenScaleAndStep({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+
+  WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+
+
+  WidgetTransitionEffects.incomingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
+
+  WidgetTransitionEffects.incomingSlideInFromLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150), style = WidgetTransitionEffectStyle.none;
 
 
 
@@ -521,6 +599,7 @@ class WidgetTransitionEffects{
               offset == other.offset &&
               scale == other.scale &&
               opacity == other.opacity &&
+              builder == other.builder &&
               blur == other.blur &&
               skew == other.skew &&
               rotation == other.rotation &&
@@ -529,7 +608,7 @@ class WidgetTransitionEffects{
               curve == other.curve;
 
   @override
-  int get hashCode => offset.hashCode ^ scale.hashCode ^ duration.hashCode ^ delay.hashCode ^ skew.hashCode ^ opacity.hashCode^ blur.hashCode^ rotation.hashCode ^ curve.hashCode;
+  int get hashCode => offset.hashCode ^ builder.hashCode ^ scale.hashCode ^ duration.hashCode ^ delay.hashCode ^ skew.hashCode ^ opacity.hashCode^ blur.hashCode^ rotation.hashCode ^ curve.hashCode;
 }
 
 
@@ -537,7 +616,7 @@ class WidgetTransitionEffects{
 
 class WidgetRestingEffects{
   WidgetRestingEffectStyle? style;
-  AnimationSettingsBuilder? builder;
+  AtRestAnimationSettingsBuilder? builder;
   Duration? duration;
   Curve? curve;
   int? numberOfPlays;
