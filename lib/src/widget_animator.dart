@@ -565,6 +565,7 @@ class WidgetTransitionEffects{
   static Duration defaultDuration = const Duration(milliseconds: 300);
 
 
+  @protected
   WidgetTransitionEffects.withStyle({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder, required this.style});
 
   WidgetTransitionEffects({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder}) : style = WidgetTransitionEffectStyle.none;
