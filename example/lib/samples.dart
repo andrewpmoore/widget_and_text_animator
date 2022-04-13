@@ -78,6 +78,24 @@ class Samples extends StatelessWidget {
                     child: const Text('Text animations')),
                 incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1500)),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextAnimator('WidgetAnimatorSequence',
+                  initialDelay: const Duration(milliseconds: 1800),
+                  style: Theme.of(context).textTheme.headline5,
+                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+              const SizedBox(
+                height: 10,
+              ),
+              WidgetAnimator(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(_WidgetSequence.route());
+                    },
+                    child: const Text('Samples')),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 2100)),
+              ),
             ],
           ),
         ),
@@ -1504,15 +1522,15 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                     <TweenSequenceItem<double>>[
                       if (delay > 0)
                         TweenSequenceItem<double>(
-                          tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.linear)),
+                          tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.easeInOut)),
                           weight: delay,
                         ),
                       TweenSequenceItem<double>(
-                        tween: Tween<double>(begin: 1, end: 1.2).chain(CurveTween(curve: Curves.linear)),
+                        tween: Tween<double>(begin: 1, end: 0.8).chain(CurveTween(curve: Curves.fastOutSlowIn)),
                         weight: duration * 0.7,
                       ),
                       TweenSequenceItem<double>(
-                        tween: Tween<double>(begin: 1.2, end: 4).chain(CurveTween(curve: Curves.ease)),
+                        tween: Tween<double>(begin: 0.8, end: 4).chain(CurveTween(curve: Curves.ease)),
                         weight: duration * 0.3,
                       ),
                     ],
@@ -2494,5 +2512,149 @@ class _SamplesTextState extends State<SamplesText> {
         ],
       ),
     );
+  }
+}
+
+
+
+
+
+
+class _WidgetSequence extends StatefulWidget {
+  const _WidgetSequence({Key? key}) : super(key: key);
+
+  static Route<dynamic> route() {
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return const _WidgetSequence();
+    });
+  }
+
+  @override
+  State<_WidgetSequence> createState() => _WidgetSequenceState();
+}
+
+
+class _WidgetSequenceState extends State<_WidgetSequence> {
+  int currentPage = 0;
+
+
+  int sampleCount = 2;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Sequence examples'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (mounted) {
+                  setState(() {
+                    currentPage == sampleCount - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                  });
+                }
+              },
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: currentPage==0 ? const _SequenceSample1() : const _SequenceSample2(),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              WidgetAnimator(
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                child: OutlinedButton(
+                    onPressed: () {
+                      if (mounted) {
+                        setState(() {
+                          currentPage == 0 ? currentPage = sampleCount - 1 : currentPage = currentPage - 1;
+                        });
+                      }
+                    },
+                    child: const Text('Previous')),
+              ),
+              WidgetAnimator(
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                child: OutlinedButton(
+                    onPressed: () {
+                      if (mounted) {
+                        setState(() {
+                          currentPage == sampleCount - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                        });
+                      }
+                    },
+                    child: const Text('Next')),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SequenceSample1 extends StatelessWidget {
+  const _SequenceSample1({Key? key}) : super(key: key);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return WidgetAnimatorSequence(
+      children: [
+        WidgetAnimator(
+            key: const ValueKey('one'),
+            incomingEffect: WidgetTransitionEffects.incomingScaleDown(),
+            outgoingEffect: WidgetTransitionEffects.outgoingScaleUp(),
+            child: Container(width: 200,height: 200,color: Colors.red,child: Align(alignment: Alignment.centerLeft,child: Text('Red',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
+        WidgetAnimator(
+            key: const ValueKey('two'),
+            incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
+            outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
+            child: Container(width: 200,height: 200,color: Colors.green,child: Align(alignment: Alignment.centerLeft,child: Text('Green',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
+        WidgetAnimator(
+            key: const ValueKey('two'),
+            incomingEffect: WidgetTransitionEffects(blur: const Offset(2,2), duration: const Duration(milliseconds: 600)),
+            atRestEffect: WidgetRestingEffects.slide(),
+            outgoingEffect: WidgetTransitionEffects(blur: const Offset(2,2), duration: const Duration(milliseconds: 600)),
+            child: Container(width: 200,height: 200,color: Colors.blue,child: Align(alignment: Alignment.centerLeft,child: Text('Blue',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),))))
+      ],
+      tapToProceed: true,
+      loop: true,
+      transitionTime: const Duration(seconds: 4),
+    );
+  }
+}
+
+
+
+
+class _SequenceSample2 extends StatelessWidget {
+  const _SequenceSample2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Page 2');
   }
 }

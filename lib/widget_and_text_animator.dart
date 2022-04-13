@@ -1,6 +1,7 @@
 library widget_and_text_animator;
 
 export 'src/widget_animator.dart';
+export 'src/widget_animator_sequence.dart';
 export 'src/text_animator.dart';
 export 'src/styles/animation_settings.dart';
 export 'src/styles/animation_style.dart';

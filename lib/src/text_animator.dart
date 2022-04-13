@@ -68,7 +68,7 @@ class _TextAnimatorState extends State<TextAnimator> {
   }
 
   void _textChangedOutgoing() async{
-    //mark as outgoing, this will force the animation to rebuild but with only the outgoing animation set, but keeping the same text
+    //mark as outgoing, this will force the animation to rebuild and trigger the outgoing text
     _outgoing = true;
     if (mounted) {
       setState(() {});
