@@ -16,8 +16,6 @@ class Samples extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Samples'),
       ),
       body: SingleChildScrollView(
@@ -522,8 +520,6 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Incoming Samples'),
       ),
       body: Column(
@@ -1974,8 +1970,6 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('At rest Samples'),
       ),
       body: Column(
@@ -2450,8 +2444,6 @@ class _SamplesTextState extends State<SamplesText> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Text Samples'),
       ),
       body: Column(
@@ -2553,9 +2545,7 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Sequence examples'),
+        title: const Text('Widget sequence'),
       ),
       body: Column(
         children: const [
@@ -2638,9 +2628,7 @@ class _TextSequenceState extends State<_TextSequence> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Sequence examples'),
+        title: const Text('Text sequence'),
       ),
       body: Column(
         children: const [

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../widget_and_text_animator.dart';
@@ -60,7 +59,6 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
               textAnimatorToShow.onIncomingAnimationComplete;
             }
             if (widget.transitionTime!=null){
-              print('onIncomingAnimationComplete complete2');
               _timer = Timer(widget.transitionTime!, () {
                 if (mounted) {
                   int nextChild = _getNextChild();
