@@ -42,7 +42,7 @@ class Samples extends StatelessWidget {
                       Navigator.of(context).push(SamplesIncoming.route());
                     },
                     child: const Text('Incoming animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 300)),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 200)),
               ),
               WidgetAnimator(
                 child: ElevatedButton(
@@ -50,7 +50,7 @@ class Samples extends StatelessWidget {
                       Navigator.of(context).push(SamplesAtRest.route());
                     },
                     child: const Text('At rest animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 600)),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 400)),
               ),
               WidgetAnimator(
                 child: ElevatedButton(
@@ -58,15 +58,15 @@ class Samples extends StatelessWidget {
                       Navigator.of(context).push(SamplesOutgoing.route());
                     },
                     child: const Text('Outgoing animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 900)),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 600)),
               ),
               const SizedBox(
                 height: 30,
               ),
               TextAnimator('TextAnimator',
-                  initialDelay: const Duration(milliseconds: 1200),
+                  initialDelay: const Duration(milliseconds: 800),
                   style: Theme.of(context).textTheme.headline5,
-                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 800))),
               const SizedBox(
                 height: 10,
               ),
@@ -76,15 +76,15 @@ class Samples extends StatelessWidget {
                       Navigator.of(context).push(SamplesText.route());
                     },
                     child: const Text('Text animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1500)),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1000)),
               ),
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
-              TextAnimator('WidgetAnimatorSequence',
-                  initialDelay: const Duration(milliseconds: 1800),
+              TextAnimator('Sequence animators',
+                  initialDelay: const Duration(milliseconds: 1200),
                   style: Theme.of(context).textTheme.headline5,
-                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 1200))),
               const SizedBox(
                 height: 10,
               ),
@@ -93,9 +93,17 @@ class Samples extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(_WidgetSequence.route());
                     },
-                    child: const Text('Samples')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 2100)),
+                    child: const Text('WidgetAnimatorSequence')),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1400)),
               ),
+              WidgetAnimator(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(_TextSequence.route());
+                    },
+                    child: const Text('TextAnimatorSequence')),
+                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1600)),
+              )
             ],
           ),
         ),
@@ -2535,10 +2543,6 @@ class _WidgetSequence extends StatefulWidget {
 
 
 class _WidgetSequenceState extends State<_WidgetSequence> {
-  int currentPage = 0;
-
-
-  int sampleCount = 2;
 
   @override
   void initState() {
@@ -2554,57 +2558,16 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
         title: const Text('Sequence examples'),
       ),
       body: Column(
-        children: [
+        children: const [
           Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (mounted) {
-                  setState(() {
-                    currentPage == sampleCount - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                  });
-                }
-              },
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: currentPage==0 ? const _SequenceSample1() : const _SequenceSample2(),
-                ),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: _SequenceSampleWidgets(),
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == 0 ? currentPage = sampleCount - 1 : currentPage = currentPage - 1;
-                        });
-                      }
-                    },
-                    child: const Text('Previous')),
-              ),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == sampleCount - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                        });
-                      }
-                    },
-                    child: const Text('Next')),
-              ),
-            ],
-          ),
-          const SizedBox(
+          SizedBox(
             height: 20,
           ),
         ],
@@ -2613,8 +2576,8 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
   }
 }
 
-class _SequenceSample1 extends StatelessWidget {
-  const _SequenceSample1({Key? key}) : super(key: key);
+class _SequenceSampleWidgets extends StatelessWidget {
+  const _SequenceSampleWidgets({Key? key}) : super(key: key);
 
 
 
@@ -2650,11 +2613,85 @@ class _SequenceSample1 extends StatelessWidget {
 
 
 
-class _SequenceSample2 extends StatelessWidget {
-  const _SequenceSample2({Key? key}) : super(key: key);
+class _TextSequence extends StatefulWidget {
+  const _TextSequence({Key? key}) : super(key: key);
+
+  static Route<dynamic> route() {
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return const _TextSequence();
+    });
+  }
+
+  @override
+  State<_TextSequence> createState() => _TextSequenceState();
+}
+
+
+class _TextSequenceState extends State<_TextSequence> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Page 2');
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Sequence examples'),
+      ),
+      body: Column(
+        children: const [
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: _SequenceSampleText(),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class _SequenceSampleText extends StatelessWidget {
+  const _SequenceSampleText({Key? key}) : super(key: key);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TextAnimatorSequence(
+      children: [
+        TextAnimator('Red',
+            incomingEffect: WidgetTransitionEffects.incomingScaleDown(),
+            atRestEffect: WidgetRestingEffects.bounce(),
+            outgoingEffect: WidgetTransitionEffects.outgoingScaleUp(),
+            style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, color: Colors.red, letterSpacing: -2, fontSize: 64))),
+        TextAnimator('Green',
+            incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
+            atRestEffect: WidgetRestingEffects.fidget(),
+            outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
+            style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, color: Colors.green, letterSpacing: -2, fontSize: 64))),
+        TextAnimator('Blue',
+            incomingEffect: WidgetTransitionEffects(blur: const Offset(2, 2), duration: const Duration(milliseconds: 600)),
+            atRestEffect: WidgetRestingEffects.wave(),
+            outgoingEffect: WidgetTransitionEffects(blur: const Offset(2, 2), duration: const Duration(milliseconds: 600)),
+            style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, color: Colors.blue, letterSpacing: -2, fontSize: 64))),
+      ],
+      tapToProceed: true,
+      loop: true,
+      transitionTime: const Duration(seconds: 4),
+    );
   }
 }

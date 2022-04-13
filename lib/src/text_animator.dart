@@ -7,7 +7,7 @@ class TextAnimator extends StatefulWidget {
   final String text;
   final WidgetTransitionEffects? incomingEffect;
   final WidgetTransitionEffects? outgoingEffect;
-  final WidgetRestingEffects? atRestEffects;
+  final WidgetRestingEffects? atRestEffect;
   final int? maxLines;
   final TextAlign? textAlign;
   final TextStyle? style;
@@ -15,9 +15,7 @@ class TextAnimator extends StatefulWidget {
   final Duration? characterDelay;
   final Duration? spaceDelay;
 
-  const TextAnimator(this.text, {Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.onIncomingAnimationComplete, this.atRestEffects, this.onOutgoingAnimationComplete, this.maxLines, this.textAlign, this.style, this.initialDelay, this.characterDelay, this.spaceDelay}) : super(key: key);
-
-  final WidgetRestingEffects? atRestEffect;
+  const TextAnimator(this.text, {Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.onIncomingAnimationComplete, this.onOutgoingAnimationComplete, this.maxLines, this.textAlign, this.style, this.initialDelay, this.characterDelay, this.spaceDelay}) : super(key: key);
 
   final Function(Key?)? onIncomingAnimationComplete;
   final Function(Key?)? onOutgoingAnimationComplete;
@@ -124,7 +122,7 @@ class _TextAnimatorState extends State<TextAnimator> {
                           ),
                           outgoingEffect: widget.outgoingEffect,
                           atRestEffect: widget.atRestEffect,
-                          onIncomingAnimationComplete: (_isLastCharacter(i,j)) ? triggerLastIncomingAnimation : null,
+                          onIncomingAnimationComplete: (_isLastCharacter(i,j)) ? widget.onIncomingAnimationComplete : null,
                           onOutgoingAnimationComplete: (_isLastCharacter(i,j)) ? triggerLastOutgoingAnimation : null,
                           child: Text(
                             _words[i].characters.characterAt(j).string,
@@ -144,11 +142,6 @@ class _TextAnimatorState extends State<TextAnimator> {
     return i==_words.length-1&&j==_words[i].characters.length-1;
   }
 
-  triggerLastIncomingAnimation(Key? p1) {
-    if  (widget.onIncomingAnimationComplete!=null){
-      widget.onIncomingAnimationComplete;
-    }
-  }
 
   triggerLastOutgoingAnimation(Key? p1) {
     //when the last animation character triggers, now it's time to replace the text with the new incoming text

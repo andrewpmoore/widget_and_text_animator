@@ -1,25 +1,26 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../widget_and_text_animator.dart';
 
-class WidgetAnimatorSequence extends StatefulWidget {
-  const WidgetAnimatorSequence({Key? key, required this.children, this.tapToProceed, this.loop, this.transitionTime, this.onPressed}) : super(key: key);
+class TextAnimatorSequence extends StatefulWidget {
+  const TextAnimatorSequence({Key? key, required this.children, this.tapToProceed, this.loop, this.transitionTime, this.onPressed}) : super(key: key);
 
-  final List<WidgetAnimator> children;
+  final List<TextAnimator> children;
   final bool? tapToProceed;
   final bool? loop;
   final Duration? transitionTime;
   final Function? onPressed;
 
   @override
-  State<WidgetAnimatorSequence> createState() => _WidgetAnimatorSequenceState();
+  State<TextAnimatorSequence> createState() => _TextAnimatorSequenceState();
 }
 
-class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
+class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
 
   int currentChildToRender = 0;
-  late Timer? _timer;
+  late Timer? _timer = Timer(const Duration(seconds: 1), (){});
 
   @override
   void dispose() {
@@ -29,7 +30,7 @@ class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetAnimator widgetAnimatorToShow = widget.children[currentChildToRender];
+    TextAnimator textAnimatorToShow = widget.children[currentChildToRender];
 
     return GestureDetector(
         onTap: () {
@@ -48,18 +49,18 @@ class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
             }
           }
         },
-        child: WidgetAnimator(
-          outgoingEffect: widgetAnimatorToShow.outgoingEffect,
-          incomingEffect: widgetAnimatorToShow.incomingEffect,
-          atRestEffect: widgetAnimatorToShow.atRestEffect,
-          child: Container(
-            key: ValueKey('widget$currentChildToRender'),
-            child: widgetAnimatorToShow.child,),
+        child: TextAnimator(
+          textAnimatorToShow.text,
+          style: textAnimatorToShow.style,
+          incomingEffect: textAnimatorToShow.incomingEffect,
+          outgoingEffect: textAnimatorToShow.outgoingEffect,
+          atRestEffect: textAnimatorToShow.atRestEffect,
           onIncomingAnimationComplete: (_){
-            if (widgetAnimatorToShow.onIncomingAnimationComplete!=null) {
-              widgetAnimatorToShow.onIncomingAnimationComplete;
+            if (textAnimatorToShow.onIncomingAnimationComplete!=null) {
+              textAnimatorToShow.onIncomingAnimationComplete;
             }
             if (widget.transitionTime!=null){
+              print('onIncomingAnimationComplete complete2');
               _timer = Timer(widget.transitionTime!, () {
                 if (mounted) {
                   int nextChild = _getNextChild();
@@ -71,8 +72,14 @@ class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
                 }
               });
             }
+
           },
-          onOutgoingAnimationComplete: widgetAnimatorToShow.onOutgoingAnimationComplete
+          onOutgoingAnimationComplete: textAnimatorToShow.onOutgoingAnimationComplete,
+          textAlign: textAnimatorToShow.textAlign,
+          characterDelay: textAnimatorToShow.characterDelay,
+          spaceDelay: textAnimatorToShow.spaceDelay,
+          initialDelay: textAnimatorToShow.initialDelay,
+          maxLines: textAnimatorToShow.maxLines,
         ));
   }
 
