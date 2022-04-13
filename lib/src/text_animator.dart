@@ -81,9 +81,6 @@ class _TextAnimatorState extends State<TextAnimator> {
     if (mounted) {
       setState(() {});
     }
-
-
-
   }
 
   @override

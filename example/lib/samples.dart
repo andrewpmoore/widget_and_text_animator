@@ -2549,6 +2549,10 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
       ),
       body: Column(
         children: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Tap on widget to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next widget is optional too.', textAlign: TextAlign.center,),
+          ),
           Expanded(
             child: Center(
               child: Padding(
@@ -2632,6 +2636,10 @@ class _TextSequenceState extends State<_TextSequence> {
       ),
       body: Column(
         children: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Tap on text to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next text is optional too.', textAlign: TextAlign.center,),
+          ),
           Expanded(
             child: Center(
               child: Padding(
