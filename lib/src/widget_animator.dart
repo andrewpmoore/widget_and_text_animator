@@ -479,7 +479,7 @@ class _OptionalFiltered extends StatelessWidget {
   Widget build(BuildContext context) {
     if (blurX>0||blurY>0){
       return ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: blurX, sigmaY: blurY),
+        imageFilter: ImageFilter.blur(sigmaX: blurX.clamp(0.001, 1000), sigmaY: blurY.clamp(0.001, 1000)),
         child: child,
       );
     }
