@@ -5,6 +5,7 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationAtRestStyle] rotates the widget around a center axis, using a [Curves.easeInOut] if you want a rest on each rotation
 class AnimationStyleRotate extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

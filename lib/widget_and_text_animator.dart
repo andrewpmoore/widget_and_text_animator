@@ -1,3 +1,4 @@
+//_Widget and text animation_ is a library with an extensive list of cool animations for widget and text
 library widget_and_text_animator;
 
 export 'src/widget_animator.dart';

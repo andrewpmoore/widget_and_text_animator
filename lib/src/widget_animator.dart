@@ -26,6 +26,8 @@ enum _WidgetAnimationStatus {
   outgoing,
 }
 
+
+///A range of default effects to show when an widget isn't transitioning and is _at rest_
 enum WidgetRestingEffectStyle {
   pulse,
   rotate,
@@ -40,7 +42,7 @@ enum WidgetRestingEffectStyle {
   none
 }
 
-
+///Sample transition effects for when widgets are either transitioning in or out
 enum WidgetTransitionEffectStyle {
   incomingOffsetAndThenScale,
   incomingOffsetAndThenScaleAndStep,
@@ -48,17 +50,33 @@ enum WidgetTransitionEffectStyle {
   none
 }
 
+
+///Widget animator is a class you can wrap around any [Widget] to enable a collection of different animations effects to it,
+///they are broken down into three categories
+/// - Incoming transitions - for when the widget is first rendered onto the screen
+/// - At rest animations - which will show once the incoming transition is complete while the widget is active
+/// - Outgoing transitions - for when a change is detected (either by the [Key] of the child changing or by the widget type changing)
+/// the widget will only change once the outgoing transition has completed
+/// All transitions (incoming/at rest/outgoing) are optional
 class WidgetAnimator extends StatefulWidget {
 
+  /// [WidgetTransitionEffects] to show when a widget is first rendered
   final WidgetTransitionEffects? incomingEffect;
+  /// [WidgetTransitionEffects] to show when a widget is being replaced
   final WidgetTransitionEffects? outgoingEffect;
+  /// [WidgetTransitionEffects] to show when a widget is displayed any not transitioning in or out
   final WidgetRestingEffects? atRestEffect;
 
+  /// [Function] callback to call once the incoming animation has completed
   final Function(Key?)? onIncomingAnimationComplete;
+
+  /// [Function] callback to call once the outgoing animation has completed
   final Function(Key?)? onOutgoingAnimationComplete;
 
+  /// [Widget] the child widget to render that requires animating
   final Widget? child;
 
+  /// Constructor for the [WidgetAnimator]
   const WidgetAnimator({Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.child, this.onIncomingAnimationComplete, this.onOutgoingAnimationComplete}) : super(key: key);
 
   @override
@@ -72,20 +90,24 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
   int atRestNumberOfPlays = 0;
 
-
+  ///[Widget] child to display at this point in time
   Widget? childToDisplay;
+
+  ///[Widget] child to hold is used to hold a change to a widget while any outgoing animations are played from the previous child widget
   Widget? childToHold;
   WidgetTransitionEffects? outgoingTransitionToHold;
   WidgetTransitionEffects? outgoingTransitionToDisplay;
 
   Key? widgetKey;
 
+  ///[_WidgetAnimationStatus] to determine which state the animation is currently at (incoming/atRest/outgoing)
   late _WidgetAnimationStatus widgetAnimationStatus;
 
   @override
   void initState() {
 
     super.initState();
+    ///initialise the animation controller
     _animationController = AnimationController(duration: const Duration(milliseconds: 0),vsync: this,);
     _animationSettings = AnimationSettings(animationController: _animationController);
     _animationSettings.opacityAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -112,17 +134,21 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     _animationController.addStatusListener((status) {
       if (widgetAnimationStatus == _WidgetAnimationStatus.incoming) {
         if (status == AnimationStatus.completed) {
+            ///switch from the incoming animation completing to the 'atRest' state
             _initAtRest();
             if (widget.onIncomingAnimationComplete!=null && widget.child!=null) {
+              ///trigger the callback once the incoming animation has completed
               widget.onIncomingAnimationComplete!(widget.child?.key);
             }
         }
 
       } else if (widgetAnimationStatus == _WidgetAnimationStatus.rest) {
         if (status == AnimationStatus.completed) {
+          ///increment the number of times an animation at rest has played
           atRestNumberOfPlays++;
           int target = widget.atRestEffect?.numberOfPlays ?? 0;
 
+          ///work out whether the animation needs to repeat and if it has, whether it's yet reached it's numberOfPlays
           if (target <= 0) {
             //if it's set to -1, then repeat forever
             _animationController.forward(from: 0);
@@ -134,10 +160,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
         }
       } else if (widgetAnimationStatus == _WidgetAnimationStatus.outgoing) {
         if (status == AnimationStatus.completed) {
+          ///the old outgoing animation has now finished, so take the replacement child at set it to display and trigger any incoming effects
           childToDisplay = childToHold;
           outgoingTransitionToDisplay = outgoingTransitionToHold;
           _initIncoming();
           if (widget.onOutgoingAnimationComplete!=null && widget.child!=null) {
+            ///trigger the callback now the outgoing animation has completed
             widget.onOutgoingAnimationComplete!(widget.child?.key);
           }
         }
@@ -146,20 +174,25 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   }
 
   void _initIncoming() async{
+    ///Initialise or create the incoming effect and set defaults for items not specified
     WidgetTransitionEffects incomingEffect = widget.incomingEffect ?? WidgetTransitionEffects(opacity: 1000, duration: const Duration(milliseconds: 1));
 
     Duration incomingDelay = incomingEffect.delay??const Duration(milliseconds: 0);
     Duration incomingDuration = incomingEffect.duration ??  const Duration(milliseconds: 300);
     Curve incomingCurve = incomingEffect.curve ?? Curves.easeInOut;
+    ///set the animation status
     widgetAnimationStatus = _WidgetAnimationStatus.incoming;
 
+    ///set the animation to the start and set the duration
     _animationController.value = 0;
     _animationController.duration = Duration(milliseconds: incomingDuration.inMilliseconds + incomingDelay.inMilliseconds);
 
     if (incomingEffect.builder!=null){
+      ///a builder was supplied so set the animation settings based upon this
       _animationSettings = incomingEffect.builder!(incomingEffect, _animationController);
     }
     else if (incomingEffect.style!=WidgetTransitionEffectStyle.none){
+      ///a style for the transition animation was supplied so set the animations settings based on the style
       switch (incomingEffect.style){
         case WidgetTransitionEffectStyle.incomingOffsetAndThenScale:
           _animationSettings = AnimationIncomingTransitionOffsetAndScale().getSettings(incomingEffect, _animationController);
@@ -172,6 +205,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
       }
     }
     else {
+      ///no style was specified, so work through all the transition settings and set a tween sequence for each type
       _animationSettings.opacityAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
         if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
@@ -237,13 +271,14 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
       ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
     }
 
+    ///play the incoming animation
     _animationController.forward();
 
 
   }
 
   void _initAtRest() async {
-
+    ///Initialise or create the at rest animation and set defaults for items not specified
     WidgetRestingEffects restingEffects = widget.atRestEffect ?? WidgetRestingEffects(style: WidgetRestingEffectStyle.none, delay: const Duration(days: 0), duration: const Duration(days: 1), effectStrength: 1, alignment: Alignment.center, curve: Curves.linear);
 
     assert(!(restingEffects.style==null&&restingEffects.builder==null), 'You must specify either a style or a builder, but neither were supplied');
@@ -255,17 +290,19 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
     if (mounted) {
       setState(() {
+        ///change the animate state to atRest
         widgetAnimationStatus = _WidgetAnimationStatus.rest;
       });
     }
 
-
+    ///set the animation to the start and set it's duration
     _animationController.value = 0;
     _animationController.duration = restDuration;
 
 
 
     if (restingEffects.style!=null) {
+      ///a style has been specified so make a call to that style to get the animation settings
       switch (restingEffects.style) {
         case WidgetRestingEffectStyle.pulse:
           _animationSettings = AnimationStylePulse().getSettings(restingEffects, _animationController);
@@ -303,21 +340,24 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
       }
     }
     else{
-      //if we don't have a style then we should have a builder for a custom animation
+      ///we don't have a style then we'll have a builder for a custom animation
       _animationSettings = restingEffects.builder!(restingEffects, _animationController);
     }
 
+    ///play the animation, unless one isn't required
     if (restingEffects.style!=WidgetRestingEffectStyle.none) {
       _animationController.forward();
     }
   }
 
   void _initOutgoing() async{
+    ///Initialise or create the incoming effect and set defaults for items not specified
     WidgetTransitionEffects outgoingEffect = outgoingTransitionToDisplay ?? WidgetTransitionEffects(opacity: 1, duration: const Duration(milliseconds: 1));
     Duration outgoingDuration = outgoingEffect.duration ??  const Duration(milliseconds: 300);
     Curve outgoingCurve = outgoingEffect.curve ?? Curves.easeInOut;
     if (mounted) {
       setState(() {
+        ///set the animation status to outgoing
         widgetAnimationStatus = _WidgetAnimationStatus.outgoing;
       });
     }
@@ -325,9 +365,11 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     _animationController.duration = outgoingDuration;
 
     if (outgoingEffect.builder!=null){
+      ///a builder was specified, so use its data as the animation settings
       _animationSettings = outgoingEffect.builder!(outgoingEffect, _animationController);
     }
     else if (outgoingEffect.style!=WidgetTransitionEffectStyle.none){
+      ///a style was specified so use this for the animation settings
       switch (outgoingEffect.style){
         case WidgetTransitionEffectStyle.outgoingOffsetAndThenScale:
           _animationSettings = AnimationOutgoingTransitionOffsetAndScale().getSettings(outgoingEffect, _animationController);
@@ -338,6 +380,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     }
 
     else {
+      ///no builder or style specified so use the specific properties to set up the animation tween settings
       _animationSettings.opacityAnimation =
           Tween<double>(begin: _animationSettings.opacityAnimation?.value, end: outgoingEffect.opacity ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
       _animationSettings.scaleAnimation =
@@ -359,6 +402,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
       _animationController.value = 0;
     }
 
+    ///play the outgoing animation
     _animationController.forward();
 
   }
@@ -371,6 +415,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     super.dispose();
   }
 
+  ///the widget has changed (either [Key] or widget type), so store the new details ready for when the previous outgoing animation has completed
   void _widgetChanged(){
     if (mounted) {
       setState(() {
@@ -379,6 +424,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
         outgoingTransitionToHold = widget.outgoingEffect;
       });
     }
+    ///start outgoing animation
     _initOutgoing();
   }
 
@@ -386,11 +432,13 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
 
+    ///check to see if the widget has changed [Key] or it's type, if it has, trigger a change
     Key widgetChild = widget.child?.key??const ValueKey('default-widget-animator-key');
     if ((widgetChild!=widgetKey)||(widget.child.runtimeType!=childToDisplay.runtimeType)){
       _widgetChanged();
     }
 
+    ///Apply all the effects to the widget based on the tween values
     return AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -420,7 +468,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   }
 }
 
-
+/// [_OptionalFiltered] this widget will either just pass the child straight through or apply the blur effects if specified
 class _OptionalFiltered extends StatelessWidget {
   final Widget child;
   final double blurX;
@@ -441,6 +489,7 @@ class _OptionalFiltered extends StatelessWidget {
   }
 }
 
+/// [_OptionalTranslate] this widget will either just pass the child straight through or apply the offset effects if specified
 class _OptionalTranslate extends StatelessWidget {
   final Widget child;
   final double offsetX;
@@ -462,6 +511,7 @@ class _OptionalTranslate extends StatelessWidget {
 }
 
 
+/// [_OptionalSkew] this widget will either just pass the child straight through or apply the skew effects if specified
 class _OptionalSkew extends StatelessWidget {
   final Widget child;
   final double skewX;
@@ -486,6 +536,7 @@ class _OptionalSkew extends StatelessWidget {
 
 
 
+/// [_OptionalRotate] this widget will either just pass the child straight through or apply the rotation effects if specified
 class _OptionalRotate extends StatelessWidget {
   final Widget child;
   final double angle;
@@ -506,7 +557,7 @@ class _OptionalRotate extends StatelessWidget {
 }
 
 
-
+/// [_OptionalScale] this widget will either just pass the child straight through or apply the scale effects if specified
 class _OptionalScale extends StatelessWidget {
   final Widget child;
   final double scale;
@@ -526,6 +577,7 @@ class _OptionalScale extends StatelessWidget {
   }
 }
 
+/// [_OptionalOpacity] this widget will either just pass the child straight through or apply the opacity effects if specified
 class _OptionalOpacity extends StatelessWidget {
   final Widget child;
   final double opacity;
@@ -547,19 +599,43 @@ class _OptionalOpacity extends StatelessWidget {
 
 
 
-
+///Class for setting up the incoming or outgoing transition effects
 class WidgetTransitionEffects{
+  /// [Offset] set up the offset from the position that the widget would normally render, e.g. Offset(50, 20) would render 50 pixels to the right and 20 below the normal location
+  /// Offset(-50, -20) would render 50 pixels to the left and 20 above the normal location
   final Offset? offset;
+
+  /// [Offset] Skew, the amount of skew on the X and Y axis e.g. Offset(0.2, 0.5) would be a skew of 0.2 on the X axis and 0.5 on the Y axis
   final Offset? skew;
+
+  /// [double] The scale proportion compared to the widgets normal size, the default scale is 1.25x the normal size, use smaller numbers such as 0.5 to decrease the size and values larger
+  /// then one to increase the size
   final double? scale;
+
+  /// [Offset] Blue, the amount of blue on the X and Y axis e.g. Offset(2, 5) would be a blur of 2 on the X axis
+  /// and 5 on the Y axis, note that this effect can be quite performance intensive, so try to limit the amount it's used
   final Offset? blur;
+
+  /// [double] The rotation in radians, so math.pi/0.5 will rotate a full circle, math.pi/6 will rotate a small amount
   final double? rotation;
+
+  /// [double] an opacity range from 0..1
   final double? opacity;
+
+  /// [Curve] A curve for the animation tween the play
   final Curve? curve;
+
+  /// [TransitionAnimationSettingsBuilder] The builder allows you to create your own custom combinations of the above properties for maximum flexibility,
+  /// returns a [TransitionAnimationSettingsBuilder] see the samples.dart in the examples project for an example of using the builder
   TransitionAnimationSettingsBuilder? builder;
+
+  /// [Duration] the duration that the transition effect will play for
   final Duration? duration;
+
+  /// [Duration] a delay before playing the transition effect
   final Duration? delay;
 
+  /// [WidgetTransitionEffectStyle] style for the potential for more complex animation timings
   final WidgetTransitionEffectStyle style;
 
   static Duration defaultDuration = const Duration(milliseconds: 300);
@@ -568,19 +644,16 @@ class WidgetTransitionEffects{
   @protected
   WidgetTransitionEffects.withStyle({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder, required this.style});
 
+  ///Default constructor with the ability to specify and values available)
   WidgetTransitionEffects({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder}) : style = WidgetTransitionEffectStyle.none;
 
-  WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
-  WidgetTransitionEffects.incomingOffsetThenScaleAndStep({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
-
-  WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
-
-
+  ///Default scale transitions
   WidgetTransitionEffects.incomingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.incomingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.outgoingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.outgoingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
 
+  ///Default slide transitions
   WidgetTransitionEffects.incomingSlideInFromLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0), style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.incomingSlideInFromRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0), style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.incomingSlideInFromTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
@@ -590,7 +663,10 @@ class WidgetTransitionEffects{
   WidgetTransitionEffects.outgoingSlideOutToTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
   WidgetTransitionEffects.outgoingSlideOutToBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150), style = WidgetTransitionEffectStyle.none;
 
-
+  ///Default style transitions
+  WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+  WidgetTransitionEffects.incomingOffsetThenScaleAndStep({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+  WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
 
   @override
   bool operator ==(Object other) =>
@@ -614,14 +690,29 @@ class WidgetTransitionEffects{
 
 
 
-
+///Class for setting up the animation effects to play while the widget is not transitioning on or off the screen
 class WidgetRestingEffects{
+  /// [WidgetRestingEffectStyle] specify either a style or a builder, a _style_ is selected from the Enum from the default options available
   WidgetRestingEffectStyle? style;
+
+  /// [AtRestAnimationSettingsBuilder] The builder allows you to create your own custom combinations of the above properties for maximum flexibility,
+  /// returns a [AtRestAnimationSettingsBuilder] see the samples.dart in the examples project for an example of using the builder
   AtRestAnimationSettingsBuilder? builder;
+
+  /// The [Duration] to play the _at rest_ animation for
   Duration? duration;
+
+  /// The animation [Curve] to use
   Curve? curve;
+
+  /// The number of times the animation should play for, will default to repeat if not specified (or the number of plays <= 0)
   int? numberOfPlays;
+
+  /// The alignment of the effect, only used for the skew effect
   Alignment? alignment;
+
+  /// [double] The effect strength, varies depending on the style, but allows for larger or smaller version of the default effect. The default value being 1.
+  /// So for example, if you wanted a larger scaling effect you could specify a larger effect strength (e.g. 2) and for smaller effects you could specify a smaller number (e.g. 0.5)
   double? effectStrength;
   Duration? delay;
 

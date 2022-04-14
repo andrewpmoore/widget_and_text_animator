@@ -8,6 +8,9 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationStyleVibrate] vibrates the widget around from its default position randomly
+/// fast speeds will make a widget look to vibrate, can also be used on slow like a screensaver that occasionally
+/// moves the position of the display to prevent screen burn
 class AnimationStyleVibrate extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

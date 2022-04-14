@@ -4,6 +4,7 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationAtRestStyle] changes the size of the widget, small effect strength will shrink the scale (e.g. 0.5), larger numbers will grow the scale (e.g. 2)
 class AnimationStyleSize extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

@@ -6,6 +6,7 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationStyleWave] which waves the widget up and down
 class AnimationStyleWave extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

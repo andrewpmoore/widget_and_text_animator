@@ -7,6 +7,7 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationStyleFidget] which randomly slightly moves the widget position around
 class AnimationStyleFidget extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

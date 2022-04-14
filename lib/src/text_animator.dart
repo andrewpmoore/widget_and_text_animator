@@ -1,23 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/src/widget_animator.dart';
 
+/// The [TextAnimator] is a direct placement for the standard [Text] widget
+/// It makes use of the [WidgetAnimator] class to allow many different transition effects
+/// The class allows you to transition in individual characters or words together to create some cool effects
 class TextAnimator extends StatefulWidget {
 
-
+  ///the [String] of text to display
   final String text;
+
+  /// [WidgetTransitionEffects] The incoming effect to show when the text is first shown
   final WidgetTransitionEffects? incomingEffect;
+
+  /// [WidgetTransitionEffects] The outgoing effect to show when the text is about to be replaced
   final WidgetTransitionEffects? outgoingEffect;
+
+  /// [WidgetRestingEffects] The effect to show when the text is not transitioning on or off the screen
   final WidgetRestingEffects? atRestEffect;
+
+  /// [int] the maximum number of lines of text to show within the widget, used in the same way as the standard [Text] widget
   final int? maxLines;
+
+  /// The [TextAlign] of the text, in the same was it's used in the [Text] widget
   final TextAlign? textAlign;
+
+  /// The [TextStyle] of the text, in the same was it's used in the [Text] widget
   final TextStyle? style;
+
+  /// A [Duration] delay before the text initially starts to show
   final Duration? initialDelay;
+
+  /// [Duration] a delay to leave between each character of text to display to create a
+  /// staggered text animation effect, if you want words to appear at once, then set a Duration of zero
   final Duration? characterDelay;
+
+  /// [Duration] a delay to leave between each space/word
+  /// if set the same as the characterDelay the timing will be consistent for all characters
+  /// can be used to drive the timing per word if characterDelay is set to zero
   final Duration? spaceDelay;
 
+  /// Standard constructor for the text animator
   const TextAnimator(this.text, {Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.onIncomingAnimationComplete, this.onOutgoingAnimationComplete, this.maxLines, this.textAlign, this.style, this.initialDelay, this.characterDelay, this.spaceDelay}) : super(key: key);
 
+  /// [Function] will be called when the last incoming animation character has completed its transition
   final Function(Key?)? onIncomingAnimationComplete;
+
+  /// [Function] will be called when the last outgoing animation character has completed its transition
   final Function(Key?)? onOutgoingAnimationComplete;
 
   @override
@@ -25,9 +53,13 @@ class TextAnimator extends StatefulWidget {
 }
 
 class _TextAnimatorState extends State<TextAnimator> {
-  final List<String> _words = []; //list for holding all the words in the incoming text, split up
-  String _text = '';  //the text from the widget
-  bool _outgoing = false;  //is the text currently showing the outgoing animation (this is used to trigger a redraw of the text to get it animating again)
+  ///list for holding all the words in the incoming text, split up
+  final List<String> _words = [];
+  ///the text from the widget
+  String _text = '';
+  ///is the text currently showing the outgoing animation (this is used to trigger a redraw of the text to get it animating again)
+  bool _outgoing = false;
+  ///a list for holding each word and character with the delays before triggering the animation
   final List<List<Duration>> _incomingDelays = [];  //the delays of each incoming character broken into words and then characters
 
   @override
@@ -38,7 +70,7 @@ class _TextAnimatorState extends State<TextAnimator> {
   }
 
   void _initWords(){
-    //split the text into words
+    ///split the text into words
     _words.clear();
     _incomingDelays.clear();
     List<String> temp = [];
@@ -47,7 +79,7 @@ class _TextAnimatorState extends State<TextAnimator> {
       _words.add(element = '$element ');
     }
 
-    //calculate the delays between each incoming character and store
+    ///calculate the delays between each incoming character and store
     Duration delay = const Duration(milliseconds: 0);
     for (int i = 0; i < _words.length; i++) {
       List<Duration> wordDelays = [];
@@ -66,7 +98,7 @@ class _TextAnimatorState extends State<TextAnimator> {
   }
 
   void _textChangedOutgoing() async{
-    //mark as outgoing, this will force the animation to rebuild and trigger the outgoing text
+    ///mark as outgoing, this will force the animation to rebuild and trigger the outgoing text
     _outgoing = true;
     if (mounted) {
       setState(() {});
@@ -74,7 +106,7 @@ class _TextAnimatorState extends State<TextAnimator> {
   }
 
   void _textChangedReplaced(Key? p1) async{
-    //force a redraw and update the words array with the next set of words to use
+    ///force a redraw and update the words array with the next set of words to use
     _outgoing = false;
     _text = widget.text;
     _initWords();
@@ -86,11 +118,12 @@ class _TextAnimatorState extends State<TextAnimator> {
   @override
   Widget build(BuildContext context) {
 
-    //detect text changes
+    ///detect text changes
     if (widget.text!=_text){
       _textChangedOutgoing();
     }
 
+    ///Use [RichText] to display each individual characters with delays as specified in the _incomingDelays
     return RichText(
         key: ValueKey(_text),  //needs a key otherwise the old widget will be reused and if the new text is longer than the old text, you get a break in the animation between the two sections
         softWrap: true,
@@ -135,13 +168,13 @@ class _TextAnimatorState extends State<TextAnimator> {
 
 
   _isLastCharacter(int i, int j) {
-    //we need to know which is the last character animation to trigger on outgoing events to know when to switch over onto the next text
+    ///we need to know which is the last character animation to trigger on outgoing events to know when to switch over onto the next text
     return i==_words.length-1&&j==_words[i].characters.length-1;
   }
 
 
   triggerLastOutgoingAnimation(Key? p1) {
-    //when the last animation character triggers, now it's time to replace the text with the new incoming text
+    ///when the last animation character triggers, now it's time to replace the text with the new incoming text
     _textChangedReplaced(p1);
     if  (widget.onOutgoingAnimationComplete!=null){
       widget.onOutgoingAnimationComplete;

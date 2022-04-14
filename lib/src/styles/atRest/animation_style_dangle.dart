@@ -4,6 +4,8 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationStyleDangle] which skews the widget to the right and back to the left from the top of the widget
+/// giving it an effect of dangling
 class AnimationStyleDangle extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

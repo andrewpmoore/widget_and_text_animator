@@ -4,6 +4,8 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+
+/// At rest animation [AnimationStylePulse] for changing the opacity of the widget, the effect strength should be in a range of [0..1]
 class AnimationStylePulse extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

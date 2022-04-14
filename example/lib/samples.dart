@@ -2589,7 +2589,7 @@ class _SequenceSampleWidgets extends StatelessWidget {
             key: const ValueKey('two'),
             incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
             outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
-            child: Container(width: 200,height: 200,color: Colors.green,child: Align(alignment: Alignment.centerLeft,child: Text('Green',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
+            child: Container(width: 200,height: 200,color: Colors.green,child: Align(alignment: Alignment.centerLeft,child: TextAnimator('Green',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
         WidgetAnimator(
             key: const ValueKey('two'),
             incomingEffect: WidgetTransitionEffects(blur: const Offset(2,2), duration: const Duration(milliseconds: 600)),

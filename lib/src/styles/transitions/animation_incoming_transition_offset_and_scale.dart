@@ -2,6 +2,8 @@ import 'package:flutter/animation.dart';
 
 import '../../../widget_and_text_animator.dart';
 
+
+/// [AnimationIncomingTransitionOffsetAndScale] demonstration of more transition animations where various elements are animated at different times
 class AnimationIncomingTransitionOffsetAndScale extends AnimationTransitionStyle{
   @override
   AnimationSettings getSettings(WidgetTransitionEffects effects, AnimationController animationController) {

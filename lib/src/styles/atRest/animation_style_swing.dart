@@ -6,6 +6,8 @@ import '../../widget_animator.dart';
 import '../animation_settings.dart';
 import '../animation_style.dart';
 
+/// At rest animation [AnimationStyleSwing] rotate the widget back and forward to give it a swinging effect, note a larger effect strength gives a smaller rotation
+/// and a smaller effect strength gives a bigger rotation
 class AnimationStyleSwing extends AnimationAtRestStyle{
   @override
   AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {

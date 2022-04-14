@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// [AnimationSettings] is used to store the settings that drive all the animations, these are mostly [Animation] objects that tweens are set on
+/// they are initialised with default sensible options
 class AnimationSettings {
   Animation<double>? opacityAnimation;
   Animation<double>? scaleAnimation;
