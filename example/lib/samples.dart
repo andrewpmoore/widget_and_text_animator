@@ -107,6 +107,24 @@ class Samples extends StatelessWidget {
                       },
                       child: const Text('TextAnimatorSequence')),
                   incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1600)),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextAnimator('Just for fun',
+                    initialDelay: const Duration(milliseconds: 1800),
+                    style: GoogleFonts.lato(textStyle: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: -2, fontSize: 28)),
+                    incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+                const SizedBox(
+                  height: 10,
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(_Fun.route());
+                      },
+                      child: const Text('Sample')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 2000)),
                 )
               ],
             ),
@@ -532,62 +550,67 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Incoming Samples'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (mounted) {
-                  setState(() {
-                    currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                  });
-                }
-              },
-              child: Center(
-                child: AnimatedSwitcher(duration: const Duration(milliseconds: 100), child: widgetList[currentPage]),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Incoming Samples'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                    });
+                  }
+                },
+                child: Center(
+                  child: AnimatedSwitcher(duration: const Duration(milliseconds: 100), child: widgetList[currentPage]),
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
-                        });
-                      }
-                    },
-                    child: const Text('Previous')),
-              ),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                        });
-                      }
-                    },
-                    child: const Text('Next')),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
+                          });
+                        }
+                      },
+                      child: const Text('Previous')),
+                ),
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                          });
+                        }
+                      },
+                      child: const Text('Next')),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -639,59 +662,64 @@ class _SamplesOutgoingState extends State<SamplesOutgoing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Outgoing Samples'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          const Text('Tap square to start outgoing animation'),
-          const Expanded(
-            child: SizedBox(),
-          ),
-          IndexedStack(
-            index: currentPage,
-            children: widgetList,
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
-                        });
-                      }
-                    },
-                    child: const Text('Previous')),
-              ),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 150), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                        });
-                      }
-                    },
-                    child: const Text('Next')),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Outgoing Samples'),
+        ),
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            const Text('Tap square to start outgoing animation'),
+            const Expanded(
+              child: SizedBox(),
+            ),
+            IndexedStack(
+              index: currentPage,
+              children: widgetList,
+            ),
+            const Expanded(
+              child: SizedBox(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
+                          });
+                        }
+                      },
+                      child: const Text('Previous')),
+                ),
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 150), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                          });
+                        }
+                      },
+                      child: const Text('Next')),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1982,62 +2010,67 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('At rest Samples'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (mounted) {
-                  setState(() {
-                    currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                  });
-                }
-              },
-              child: Center(
-                child: AnimatedSwitcher(duration: const Duration(milliseconds: 100), child: widgetList[currentPage]),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('At rest Samples'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                    });
+                  }
+                },
+                child: Center(
+                  child: AnimatedSwitcher(duration: const Duration(milliseconds: 100), child: widgetList[currentPage]),
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
-                        });
-                      }
-                    },
-                    child: const Text('Previous')),
-              ),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                        });
-                      }
-                    },
-                    child: const Text('Next')),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == 0 ? currentPage = widgetList.length - 1 : currentPage = currentPage - 1;
+                          });
+                        }
+                      },
+                      child: const Text('Previous')),
+                ),
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == widgetList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                          });
+                        }
+                      },
+                      child: const Text('Next')),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -2456,74 +2489,79 @@ class _SamplesTextState extends State<SamplesText> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Text Samples'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                if (mounted) {
-                  setState(() {
-                    currentPage == _settingsList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                  });
-                }
-              },
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextAnimator(_settingsList[currentPage].text,
-                      incomingEffect: _settingsList[currentPage].incomingEffect,
-                      outgoingEffect: _settingsList[currentPage].outgoingEffect,
-                      atRestEffect: _settingsList[currentPage].atRestEffect,
-                      style: _settingsList[currentPage].style,
-                      textAlign: _settingsList[currentPage].textAlign,
-                      initialDelay: _settingsList[currentPage].initialDelay,
-                      spaceDelay: _settingsList[currentPage].spaceDelay,
-                      characterDelay: _settingsList[currentPage].characterDelay,
-                      maxLines: _settingsList[currentPage].maxLines),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Text Samples'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      currentPage == _settingsList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                    });
+                  }
+                },
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextAnimator(_settingsList[currentPage].text,
+                        incomingEffect: _settingsList[currentPage].incomingEffect,
+                        outgoingEffect: _settingsList[currentPage].outgoingEffect,
+                        atRestEffect: _settingsList[currentPage].atRestEffect,
+                        style: _settingsList[currentPage].style,
+                        textAlign: _settingsList[currentPage].textAlign,
+                        initialDelay: _settingsList[currentPage].initialDelay,
+                        spaceDelay: _settingsList[currentPage].spaceDelay,
+                        characterDelay: _settingsList[currentPage].characterDelay,
+                        maxLines: _settingsList[currentPage].maxLines),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == 0 ? currentPage = _settingsList.length - 1 : currentPage = currentPage - 1;
-                        });
-                      }
-                    },
-                    child: const Text('Previous')),
-              ),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
-                child: OutlinedButton(
-                    onPressed: () {
-                      if (mounted) {
-                        setState(() {
-                          currentPage == _settingsList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
-                        });
-                      }
-                    },
-                    child: const Text('Next')),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 600), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == 0 ? currentPage = _settingsList.length - 1 : currentPage = currentPage - 1;
+                          });
+                        }
+                      },
+                      child: const Text('Previous')),
+                ),
+                WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 750), duration: const Duration(milliseconds: 600), curve: Curves.easeOut),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        if (mounted) {
+                          setState(() {
+                            currentPage == _settingsList.length - 1 ? currentPage = 0 : currentPage = currentPage + 1;
+                          });
+                        }
+                      },
+                      child: const Text('Next')),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -2557,28 +2595,33 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Widget sequence'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Tap on widget to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next widget is optional too.', textAlign: TextAlign.center,),
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: _SequenceSampleWidgets(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Widget sequence'),
+        ),
+        body: Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('Tap on widget to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next widget is optional too.', textAlign: TextAlign.center,),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: _SequenceSampleWidgets(),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -2603,7 +2646,7 @@ class _SequenceSampleWidgets extends StatelessWidget {
             key: const ValueKey('two'),
             incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
             outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToBottom(),
-            child: Container(width: 200,height: 200,color: Colors.green,child: Align(alignment: Alignment.centerLeft,child: TextAnimator('Green',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
+            child: Container(width: 200,height: 200,color: Colors.green,child: Align(alignment: Alignment.centerLeft,child: Text('Green',style: GoogleFonts.sanchez(textStyle: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56)),)))),
         WidgetAnimator(
             key: const ValueKey('two'),
             incomingEffect: WidgetTransitionEffects(blur: const Offset(2,2), duration: const Duration(milliseconds: 600)),
@@ -2644,28 +2687,33 @@ class _TextSequenceState extends State<_TextSequence> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Text sequence'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: Column(
-        children: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Tap on text to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next text is optional too.', textAlign: TextAlign.center,),
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: _SequenceSampleText(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Text sequence'),
+        ),
+        body: Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('Tap on text to move onto the next item, can be set to loop back to the start or not. Automatically proceeding to the next text is optional too.', textAlign: TextAlign.center,),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: _SequenceSampleText(),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -2702,6 +2750,164 @@ class _SequenceSampleText extends StatelessWidget {
       tapToProceed: true,
       loop: true,
       transitionTime: const Duration(seconds: 4),
+    );
+  }
+}
+
+
+
+class _Fun extends StatefulWidget {
+  const _Fun({Key? key}) : super(key: key);
+
+  static Route<dynamic> route() {
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return const _Fun();
+    });
+  }
+
+  @override
+  State<_Fun> createState() => _FunState();
+}
+
+class _FunState extends State<_Fun> {
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
+      ),
+      child: WillPopScope(
+        onWillPop: ()async{
+          return true;
+        },
+        child: Scaffold(
+            body: Container(decoration: const BoxDecoration(gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Colors.grey, Colors.blueGrey, Colors.blue], stops: [0.1, 0.3, 0.8])),
+                child: Stack(
+                  // fit: StackFit.expand,
+                  children: [
+                    Positioned(
+                        top: 70,
+                        left: 20,
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).pop();
+                          },
+                          child: WidgetAnimator(
+                              incomingEffect: WidgetTransitionEffects(duration: const Duration(milliseconds: 800), offset: const Offset(0, 100), scale: 0.6, opacity: 0.1, curve: Curves.bounceOut),
+                              atRestEffect: WidgetRestingEffects.rotate(duration: const Duration(seconds: 30), curve: Curves.linear),
+                              child: Image.asset(
+                                'assets/sun.png',
+                                width: 130,
+                                height: 130,
+                              )),
+                        )),
+                    Positioned(
+                        top: 50,
+                        left: -150,
+                        child: WidgetAnimatorSequence(
+                          transitionTime: const Duration(seconds: 3),
+                          loop: true,
+                          children: [
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(seconds: 4), duration: const Duration(seconds: 36), offset: const Offset(600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud1.png',
+                                  key: const ValueKey('cloud1'),
+                                  width: 130,
+                                  height: 90,
+                                )),
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(seconds: 4), duration: const Duration(seconds: 40), offset: const Offset(600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud2.png',
+                                  key: const ValueKey('cloud2'),
+                                  width: 130,
+                                  height: 90,
+                                )),
+                          ],
+                        )),
+                    Center(
+                      child: TextAnimatorSequence(
+                        transitionTime: const Duration(seconds: 4),
+                        loop: true,
+                        children: [
+                          TextAnimator(
+                            'Breath in...',
+                            incomingEffect: WidgetTransitionEffects.incomingOffsetThenScale(),
+                            outgoingEffect: WidgetTransitionEffects.outgoingScaleUp(),
+                            atRestEffect: WidgetRestingEffects.size(effectStrength: 1.3, duration: const Duration(seconds: 12)),
+                            characterDelay: const Duration(milliseconds: 120),
+                            spaceDelay: const Duration(milliseconds: 120),
+                            style: GoogleFonts.lato(fontSize: 64, color: Colors.white54, fontWeight: FontWeight.w900),
+                          ),
+                          TextAnimator(
+                            'Breath out...',
+                            incomingEffect: WidgetTransitionEffects.incomingScaleDown(delay: const Duration(milliseconds: 600)),
+                            outgoingEffect: WidgetTransitionEffects(offset: const Offset(-150,0), opacity: 0, scale: 0.3),
+                            atRestEffect: WidgetRestingEffects.size(effectStrength: 0.3, duration: const Duration(seconds: 12)),
+                            characterDelay: const Duration(milliseconds: 0),
+                            spaceDelay: const Duration(milliseconds: 400),
+                            style: GoogleFonts.lato(fontSize: 64, color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: -4),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 95,
+                        right: -140,
+                        child: WidgetAnimatorSequence(
+                          transitionTime: const Duration(seconds: 1),
+                          loop: true,
+                          children: [
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(milliseconds: 1), duration: const Duration(seconds: 35), offset: const Offset(-600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud3.png',
+                                  key: const ValueKey('cloud1'),
+                                  width: 160,
+                                  height: 110,
+                                )),
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(seconds: 3), duration: const Duration(seconds: 40), offset: const Offset(-600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud2.png',
+                                  key: const ValueKey('cloud2'),
+                                  width: 140,
+                                  height: 95,
+                                )),
+                          ],
+                        )),
+                    Positioned(
+                        bottom: 195,
+                        right: -150,
+                        child: WidgetAnimatorSequence(
+                          transitionTime: const Duration(seconds: 1),
+                          loop: true,
+                          children: [
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(seconds: 1), duration: const Duration(seconds: 75), offset: const Offset(-600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud2.png',
+                                  key: const ValueKey('cloud1'),
+                                  width: 160,
+                                  height: 110,
+                                )),
+                            WidgetAnimator(
+                                incomingEffect: WidgetTransitionEffects(curve: Curves.linear, delay: const Duration(seconds: 10), duration: const Duration(seconds: 60), offset: const Offset(-600, 0), opacity: 1),
+                                child: Image.asset(
+                                  'assets/cloud1.png',
+                                  key: const ValueKey('cloud2'),
+                                  width: 140,
+                                  height: 95,
+                                )),
+                          ],
+                        ))
+
+
+                  ],
+
+                ))),
+      ),
     );
   }
 }

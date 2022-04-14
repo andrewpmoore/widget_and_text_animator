@@ -31,12 +31,12 @@ class WidgetAnimatorSequence extends StatefulWidget {
 class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
 
   int currentChildToRender = 0;
-  late Timer? _timer;
+  Timer _timer = Timer(const Duration(seconds: 1), (){});
 
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
+    _timer.cancel();
   }
 
   @override
@@ -45,7 +45,7 @@ class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
 
     return GestureDetector(
         onTap: () {
-          _timer?.cancel();
+          _timer.cancel();
           if (widget.tapToProceed??false){
             ///move onto the next item in the sequence if clicked on
             int nextChild = _getNextChild();
