@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+
+/// [Samples] provides some simple examples of all 4 main classes [WidgetAnimator], [WidgetAnimatorSequence], [TextAnimator] and [TextAnimatorSequence]
 class Samples extends StatelessWidget {
   const Samples({Key? key}) : super(key: key);
 
@@ -14,95 +16,100 @@ class Samples extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Samples'),
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              WidgetAnimator(
-                child: Text('WidgetAnimator', style: Theme.of(context).textTheme.headline5),
-                incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600)),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(SamplesIncoming.route());
-                    },
-                    child: const Text('Incoming animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 200)),
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(SamplesAtRest.route());
-                    },
-                    child: const Text('At rest animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 400)),
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(SamplesOutgoing.route());
-                    },
-                    child: const Text('Outgoing animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 600)),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              TextAnimator('TextAnimator',
-                  initialDelay: const Duration(milliseconds: 800),
-                  style: Theme.of(context).textTheme.headline5,
-                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 800))),
-              const SizedBox(
-                height: 10,
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(SamplesText.route());
-                    },
-                    child: const Text('Text animations')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1000)),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextAnimator('Sequence animators',
-                  initialDelay: const Duration(milliseconds: 1200),
-                  style: Theme.of(context).textTheme.headline5,
-                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 1200))),
-              const SizedBox(
-                height: 10,
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(_WidgetSequence.route());
-                    },
-                    child: const Text('WidgetAnimatorSequence')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1400)),
-              ),
-              WidgetAnimator(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(_TextSequence.route());
-                    },
-                    child: const Text('TextAnimatorSequence')),
-                incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1600)),
-              )
-            ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Samples'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                WidgetAnimator(
+                  child: Text('WidgetAnimator', style: GoogleFonts.lato(textStyle: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: -2, fontSize: 28))),
+                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600)),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(SamplesIncoming.route());
+                      },
+                      child: const Text('Incoming animations')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 200)),
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(SamplesAtRest.route());
+                      },
+                      child: const Text('At rest animations')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 400)),
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(SamplesOutgoing.route());
+                      },
+                      child: const Text('Outgoing animations')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 600)),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                TextAnimator('TextAnimator',
+                    initialDelay: const Duration(milliseconds: 800),
+                    style: GoogleFonts.lato(textStyle: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: -2, fontSize: 28)),
+                    incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+                const SizedBox(
+                  height: 10,
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(SamplesText.route());
+                      },
+                      child: const Text('Text animations')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1000)),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextAnimator('Sequence animators',
+                    initialDelay: const Duration(milliseconds: 1200),
+                    style: GoogleFonts.lato(textStyle: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: -2, fontSize: 28)),
+                    incomingEffect: WidgetTransitionEffects.incomingScaleDown(duration: const Duration(milliseconds: 600))),
+                const SizedBox(
+                  height: 10,
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(_WidgetSequence.route());
+                      },
+                      child: const Text('WidgetAnimatorSequence')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1400)),
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(_TextSequence.route());
+                      },
+                      child: const Text('TextAnimatorSequence')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 1600)),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -430,6 +437,13 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
             delay: const Duration(milliseconds: 500),
             duration: const Duration(milliseconds: 1000),
             builder: (effects, animationController) {
+              ///custom builders always need to return an [AnimationSettings] object, so create one first and then
+              ///set the properties on it
+              ///For this one opacity, x axis offset and scale are all manipulated using the tween sequence chain
+              ///If you want the 'delay' and 'duration' to work
+              ///this is a good example of how to use them, firstly set the weight of the first tween to the delay
+              ///then set any other [Tween] to be a proportion of the duration e.g 30% of the duration set the
+              ///weight to duration * 0.3
               AnimationSettings _animationSettings = AnimationSettings(animationController: animationController);
 
               double delay = (effects.delay?.inMilliseconds ?? 0).toDouble();

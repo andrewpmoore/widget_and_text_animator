@@ -17,13 +17,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
       primarySwatch: Colors.blue,
-        brightness: Brightness.dark
       ),
       home: const MyHomePage(title: 'Widget and text animator'),
     );
   }
 }
 
+
+/// [MyHomePage] is a slightly tacky version of the default template app for flutter with the counter
+/// It's a close to the original version as possible, but trying to animate pretty much very bit of text and widget to
+/// give a simple example of how basic animations can be added very simply
+/// Wouldn't recommend animating everything like this in your app :D
+/// [Text] widgets have been replaced with [TextAnimator] widgets
+/// Buttons such as the [FloatingActionButton] has been wrapped with a [WidgetAnimator]
+/// A "Samples" button has also been added to get through at more examples of the animations possible
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -85,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             TextAnimator(
               'You have pushed the button this many times:',
-              atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.8),
+              atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.6),
               style: Theme.of(context).textTheme.headline5,
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(blur: const Offset(0, 20), scale: 2),
               textAlign: TextAlign.center,
