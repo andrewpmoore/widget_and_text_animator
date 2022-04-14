@@ -18,8 +18,9 @@ class Samples extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-          brightness: Brightness.dark
-      ),
+          brightness: Brightness.dark,
+          materialTapTargetSize: MaterialTapTargetSize.padded,
+    ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Samples'),
@@ -42,6 +43,7 @@ class Samples extends StatelessWidget {
                 ),
                 WidgetAnimator(
                   child: ElevatedButton(
+
                       onPressed: () {
                         Navigator.of(context).push(SamplesIncoming.route());
                       },
@@ -2835,7 +2837,7 @@ class _FunState extends State<_Fun> {
                             'Breath in...',
                             incomingEffect: WidgetTransitionEffects.incomingOffsetThenScale(),
                             outgoingEffect: WidgetTransitionEffects.outgoingScaleUp(),
-                            atRestEffect: WidgetRestingEffects.size(effectStrength: 1.3, duration: const Duration(seconds: 12)),
+                            atRestEffect: WidgetRestingEffects.size(effectStrength: 1.3, duration: const Duration(seconds: 12), curve: Curves.linear),
                             characterDelay: const Duration(milliseconds: 120),
                             spaceDelay: const Duration(milliseconds: 120),
                             style: GoogleFonts.lato(fontSize: 64, color: Colors.white54, fontWeight: FontWeight.w900),
@@ -2844,7 +2846,7 @@ class _FunState extends State<_Fun> {
                             'Breath out...',
                             incomingEffect: WidgetTransitionEffects.incomingScaleDown(delay: const Duration(milliseconds: 600)),
                             outgoingEffect: WidgetTransitionEffects(offset: const Offset(-150,0), opacity: 0, scale: 0.3),
-                            atRestEffect: WidgetRestingEffects.size(effectStrength: 0.3, duration: const Duration(seconds: 12)),
+                            atRestEffect: WidgetRestingEffects.size(effectStrength: 0.3, duration: const Duration(seconds: 12), curve: Curves.linear),
                             characterDelay: const Duration(milliseconds: 0),
                             spaceDelay: const Duration(milliseconds: 400),
                             style: GoogleFonts.lato(fontSize: 64, color: Colors.white54, fontWeight: FontWeight.w900, letterSpacing: -4),
