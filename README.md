@@ -8,7 +8,7 @@
 A collection of effects to make `Widget` Animations a breeze and `Text` animations look beautiful!
 
 
-****todo See a [live preview](https://andrewpmoore.github.io/widget_and_text_animator)   
+See a [live preview](https://andrewpmoore.github.io/widget_and_text_animator_example/index.html#/) running in your browser.   
 
 
 > Supported Platforms
