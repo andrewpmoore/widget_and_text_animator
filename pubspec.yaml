@@ -1,7 +1,7 @@
 name: widget_and_text_animator
 description: Package that enables animating widgets and sequences of text
-version: 1.0.0
-homepage: https://github.com/andrewpmoore/widget_and_text_animator.git
+version: 1.0.2
+homepage: https://github.com/andrewpmoore/widget_and_text_animator
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -15,6 +15,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  lints: ^1.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

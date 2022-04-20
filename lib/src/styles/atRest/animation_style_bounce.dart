@@ -5,15 +5,15 @@ import '../animation_settings.dart';
 import '../animation_style.dart';
 
 /// At rest animation [AnimationStyleBounce] bounces the widget by lifting it up and bouncing it down
-class AnimationStyleBounce extends AnimationAtRestStyle{
+class AnimationStyleBounce extends AnimationAtRestStyle {
   @override
-  AnimationSettings getSettings(WidgetRestingEffects effects, AnimationController animationController) {
-
-    AnimationSettings _animationSettings = AnimationSettings(animationController: animationController);
+  AnimationSettings getSettings(
+      WidgetRestingEffects effects, AnimationController animationController) {
+    AnimationSettings _animationSettings =
+        AnimationSettings(animationController: animationController);
 
     double strength = -20.0;
-    strength = (strength*effects.effectStrength!).clamp(-1000, 1000);
-
+    strength = (strength * effects.effectStrength!).clamp(-1000, 1000);
 
     _animationSettings.offsetYAnimation = TweenSequence<double>(
       <TweenSequenceItem<double>>[
@@ -28,10 +28,9 @@ class AnimationStyleBounce extends AnimationAtRestStyle{
           weight: 50.0,
         ),
       ],
-    ).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));
+    ).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.linear));
 
     return _animationSettings;
-
   }
-
 }

@@ -6,7 +6,14 @@ import '../widget_and_text_animator.dart';
 /// [WidgetAnimatorSequence] allows you to provide a list of [WidgetAnimator] widgets and have them show in sequence
 /// The sequence can progress based upon a duration set or by the user tapping on the widget (or both)
 class WidgetAnimatorSequence extends StatefulWidget {
-  const WidgetAnimatorSequence({Key? key, required this.children, this.tapToProceed, this.loop, this.transitionTime, this.onPressed}) : super(key: key);
+  const WidgetAnimatorSequence(
+      {Key? key,
+      required this.children,
+      this.tapToProceed,
+      this.loop,
+      this.transitionTime,
+      this.onPressed})
+      : super(key: key);
 
   ///List of [WidgetAnimator] objects to display in the order you want them displaying
   final List<WidgetAnimator> children;
@@ -29,9 +36,8 @@ class WidgetAnimatorSequence extends StatefulWidget {
 }
 
 class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
-
   int currentChildToRender = 0;
-  Timer _timer = Timer(const Duration(seconds: 1), (){});
+  Timer _timer = Timer(const Duration(seconds: 1), () {});
 
   @override
   void dispose() {
@@ -46,59 +52,60 @@ class _WidgetAnimatorSequenceState extends State<WidgetAnimatorSequence> {
     return GestureDetector(
         onTap: () {
           _timer.cancel();
-          if (widget.tapToProceed??false){
+          if (widget.tapToProceed ?? false) {
             ///move onto the next item in the sequence if clicked on
             int nextChild = _getNextChild();
             if (mounted) {
-              if (currentChildToRender!=nextChild) {
+              if (currentChildToRender != nextChild) {
                 setState(() {
                   currentChildToRender = nextChild;
                 });
               }
             }
-            if (widget.onPressed!=null){
-              widget.onPressed;
+            if (widget.onPressed != null) {
+              widget.onPressed!();
             }
           }
         },
         child: WidgetAnimator(
-          outgoingEffect: widgetAnimatorToShow.outgoingEffect,
-          incomingEffect: widgetAnimatorToShow.incomingEffect,
-          atRestEffect: widgetAnimatorToShow.atRestEffect,
-          child: Container(
-            key: ValueKey('widget$currentChildToRender'),
-            child: widgetAnimatorToShow.child,),
-          onIncomingAnimationComplete: (_){
-            ///trigger the callback function if specified
-            if (widgetAnimatorToShow.onIncomingAnimationComplete!=null) {
-              widgetAnimatorToShow.onIncomingAnimationComplete;
-            }
-            ///set a time which once complete will move the text onto the next in the sequence
-            if (widget.transitionTime!=null){
-              _timer = Timer(widget.transitionTime!, () {
-                if (mounted) {
-                  int nextChild = _getNextChild();
-                  if (currentChildToRender!=nextChild) {
-                    setState(() {
-                      currentChildToRender = nextChild;
-                    });
+            outgoingEffect: widgetAnimatorToShow.outgoingEffect,
+            incomingEffect: widgetAnimatorToShow.incomingEffect,
+            atRestEffect: widgetAnimatorToShow.atRestEffect,
+            child: Container(
+              key: ValueKey('widget$currentChildToRender'),
+              child: widgetAnimatorToShow.child,
+            ),
+            onIncomingAnimationComplete: (key) {
+              ///trigger the callback function if specified
+              if (widgetAnimatorToShow.onIncomingAnimationComplete != null) {
+                widgetAnimatorToShow.onIncomingAnimationComplete!(key);
+              }
+
+              ///set a time which once complete will move the text onto the next in the sequence
+              if (widget.transitionTime != null) {
+                _timer = Timer(widget.transitionTime!, () {
+                  if (mounted) {
+                    int nextChild = _getNextChild();
+                    if (currentChildToRender != nextChild) {
+                      setState(() {
+                        currentChildToRender = nextChild;
+                      });
+                    }
                   }
-                }
-              });
-            }
-          },
-          onOutgoingAnimationComplete: widgetAnimatorToShow.onOutgoingAnimationComplete
-        ));
+                });
+              }
+            },
+            onOutgoingAnimationComplete:
+                widgetAnimatorToShow.onOutgoingAnimationComplete));
   }
 
   int _getNextChild() {
-    int nextChild = currentChildToRender+1;
-    if (nextChild>=widget.children.length){
+    int nextChild = currentChildToRender + 1;
+    if (nextChild >= widget.children.length) {
       ///loop back around the children if set to loop
-      if ((widget.loop??false)==true) {
+      if ((widget.loop ?? false) == true) {
         nextChild = 0;
-      }
-      else{
+      } else {
         ///or keep on the same child if not set to loop
         nextChild = nextChild - 1;
       }

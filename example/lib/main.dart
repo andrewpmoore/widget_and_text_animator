@@ -17,13 +17,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-      primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Widget and text animator'),
     );
   }
 }
-
 
 /// [MyHomePage] is a slightly tacky version of the default template app for flutter with the counter
 /// It's a close to the original version as possible, but trying to animate pretty much very bit of text and widget to
@@ -67,7 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: TextAnimator(widget.title, atRestEffect: WidgetRestingEffects.wave(),),
+        title: TextAnimator(
+          widget.title,
+          atRestEffect: WidgetRestingEffects.wave(),
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -89,13 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Expanded(child: SizedBox(),),
-
+            const Expanded(
+              child: SizedBox(),
+            ),
             TextAnimator(
               'You have pushed the button this many times:',
               atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.6),
               style: Theme.of(context).textTheme.headline5,
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(blur: const Offset(0, 20), scale: 2),
+              incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(
+                  blur: const Offset(0, 20), scale: 2),
               textAlign: TextAlign.center,
             ),
             const SizedBox(
@@ -104,19 +108,31 @@ class _MyHomePageState extends State<MyHomePage> {
             TextAnimator(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(curve: Curves.bounceOut, duration: const Duration(milliseconds: 1500)),
+              incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(
+                  curve: Curves.bounceOut,
+                  duration: const Duration(milliseconds: 1500)),
               atRestEffect: WidgetRestingEffects.dangle(),
               outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToRight(),
             ),
-            const Expanded(child: SizedBox(),),
-            WidgetAnimator(
-              incomingEffect: WidgetTransitionEffects(delay: const Duration(milliseconds: 1500), offset: const Offset(0, -30), curve: Curves.bounceOut, duration: const Duration(milliseconds: 900)),
-              atRestEffect: WidgetRestingEffects.wave(),
-              child: ElevatedButton(child: const Text('Samples'), onPressed: () {
-                Navigator.of(context).push(Samples.route());
-              }),
+            const Expanded(
+              child: SizedBox(),
             ),
-            const SizedBox(height: 20,)
+            WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects(
+                  delay: const Duration(milliseconds: 1500),
+                  offset: const Offset(0, -30),
+                  curve: Curves.bounceOut,
+                  duration: const Duration(milliseconds: 900)),
+              atRestEffect: WidgetRestingEffects.wave(),
+              child: ElevatedButton(
+                  child: const Text('Samples'),
+                  onPressed: () {
+                    Navigator.of(context).push(Samples.route());
+                  }),
+            ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),

@@ -6,7 +6,14 @@ import '../widget_and_text_animator.dart';
 /// [TextAnimatorSequence] allows you to provide a list of [TextAnimator] widgets and have them show in sequence
 /// The sequence can progress based upon a duration set or by the user tapping on the widget (or both)
 class TextAnimatorSequence extends StatefulWidget {
-  const TextAnimatorSequence({Key? key, required this.children, this.tapToProceed, this.loop, this.transitionTime, this.onPressed}) : super(key: key);
+  const TextAnimatorSequence(
+      {Key? key,
+      required this.children,
+      this.tapToProceed,
+      this.loop,
+      this.transitionTime,
+      this.onPressed})
+      : super(key: key);
 
   ///List of [TextAnimator] objects to display in the order you want them displaying
   final List<TextAnimator> children;
@@ -29,9 +36,8 @@ class TextAnimatorSequence extends StatefulWidget {
 }
 
 class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
-
   int currentChildToRender = 0;
-  Timer _timer = Timer(const Duration(seconds: 1), (){});
+  Timer _timer = Timer(const Duration(seconds: 1), () {});
 
   @override
   void dispose() {
@@ -46,18 +52,18 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
     return GestureDetector(
         onTap: () {
           _timer.cancel();
-          if (widget.tapToProceed??false){
+          if (widget.tapToProceed ?? false) {
             ///move onto the next item in the sequence if clicked on
             int nextChild = _getNextChild();
             if (mounted) {
-              if (currentChildToRender!=nextChild) {
+              if (currentChildToRender != nextChild) {
                 setState(() {
                   currentChildToRender = nextChild;
                 });
               }
             }
-            if (widget.onPressed!=null){
-              widget.onPressed;
+            if (widget.onPressed != null) {
+              widget.onPressed!();
             }
           }
         },
@@ -67,18 +73,18 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
           incomingEffect: textAnimatorToShow.incomingEffect,
           outgoingEffect: textAnimatorToShow.outgoingEffect,
           atRestEffect: textAnimatorToShow.atRestEffect,
-          onIncomingAnimationComplete: (_){
+          onIncomingAnimationComplete: (key) {
             ///trigger the callback function if specified
-            if (textAnimatorToShow.onIncomingAnimationComplete!=null) {
-              textAnimatorToShow.onIncomingAnimationComplete;
+            if (textAnimatorToShow.onIncomingAnimationComplete != null) {
+              textAnimatorToShow.onIncomingAnimationComplete!(key);
             }
 
-            if (widget.transitionTime!=null){
+            if (widget.transitionTime != null) {
               ///set a time which once complete will move the text onto the next in the sequence
               _timer = Timer(widget.transitionTime!, () {
                 if (mounted) {
                   int nextChild = _getNextChild();
-                  if (currentChildToRender!=nextChild) {
+                  if (currentChildToRender != nextChild) {
                     setState(() {
                       currentChildToRender = nextChild;
                     });
@@ -86,9 +92,9 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
                 }
               });
             }
-
           },
-          onOutgoingAnimationComplete: textAnimatorToShow.onOutgoingAnimationComplete,
+          onOutgoingAnimationComplete:
+              textAnimatorToShow.onOutgoingAnimationComplete,
           textAlign: textAnimatorToShow.textAlign,
           characterDelay: textAnimatorToShow.characterDelay,
           spaceDelay: textAnimatorToShow.spaceDelay,
@@ -98,13 +104,12 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
   }
 
   int _getNextChild() {
-    int nextChild = currentChildToRender+1;
-    if (nextChild>=widget.children.length){
+    int nextChild = currentChildToRender + 1;
+    if (nextChild >= widget.children.length) {
       ///loop back around the children if set to loop
-      if ((widget.loop??false)==true) {
+      if ((widget.loop ?? false) == true) {
         nextChild = 0;
-      }
-      else{
+      } else {
         ///or keep on the same child if not set to loop
         nextChild = nextChild - 1;
       }

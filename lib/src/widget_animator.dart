@@ -19,13 +19,11 @@ import 'styles/atRest/animation_style_bounce.dart';
 import 'styles/atRest/animation_style_swing.dart';
 import 'styles/atRest/animation_style_wave.dart';
 
-
 enum _WidgetAnimationStatus {
   incoming,
   rest,
   outgoing,
 }
-
 
 ///A range of default effects to show when an widget isn't transitioning and is _at rest_
 enum WidgetRestingEffectStyle {
@@ -50,7 +48,6 @@ enum WidgetTransitionEffectStyle {
   none
 }
 
-
 ///Widget animator is a class you can wrap around any [Widget] to enable a collection of different animations effects to it,
 ///they are broken down into three categories
 /// - Incoming transitions - for when the widget is first rendered onto the screen
@@ -59,11 +56,12 @@ enum WidgetTransitionEffectStyle {
 /// the widget will only change once the outgoing transition has completed
 /// All transitions (incoming/at rest/outgoing) are optional
 class WidgetAnimator extends StatefulWidget {
-
   /// [WidgetTransitionEffects] to show when a widget is first rendered
   final WidgetTransitionEffects? incomingEffect;
+
   /// [WidgetTransitionEffects] to show when a widget is being replaced
   final WidgetTransitionEffects? outgoingEffect;
+
   /// [WidgetTransitionEffects] to show when a widget is displayed any not transitioning in or out
   final WidgetRestingEffects? atRestEffect;
 
@@ -77,13 +75,22 @@ class WidgetAnimator extends StatefulWidget {
   final Widget? child;
 
   /// Constructor for the [WidgetAnimator]
-  const WidgetAnimator({Key? key, this.incomingEffect, this.outgoingEffect, this.atRestEffect, this.child, this.onIncomingAnimationComplete, this.onOutgoingAnimationComplete}) : super(key: key);
+  const WidgetAnimator(
+      {Key? key,
+      this.incomingEffect,
+      this.outgoingEffect,
+      this.atRestEffect,
+      this.child,
+      this.onIncomingAnimationComplete,
+      this.onOutgoingAnimationComplete})
+      : super(key: key);
 
   @override
   State<WidgetAnimator> createState() => _WidgetAnimatorState();
 }
 
-class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProviderStateMixin {
+class _WidgetAnimatorState extends State<WidgetAnimator>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   late AnimationSettings _animationSettings;
@@ -105,22 +112,40 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
   @override
   void initState() {
-
     super.initState();
-    ///initialise the animation controller
-    _animationController = AnimationController(duration: const Duration(milliseconds: 0),vsync: this,);
-    _animationSettings = AnimationSettings(animationController: _animationController);
-    _animationSettings.opacityAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.scaleAnimation = Tween<double>(begin: 1, end: 1).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.offsetXAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.offsetYAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.rotationAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.blurXAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.blurYAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.skewXAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
-    _animationSettings.skewYAnimation = Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-    widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
+    ///initialise the animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 0),
+      vsync: this,
+    );
+    _animationSettings =
+        AnimationSettings(animationController: _animationController);
+    _animationSettings.opacityAnimation = Tween<double>(begin: 0, end: 0)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: Curves.linear));
+    _animationSettings.scaleAnimation = Tween<double>(begin: 1, end: 1).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    _animationSettings.offsetXAnimation = Tween<double>(begin: 0, end: 0)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: Curves.linear));
+    _animationSettings.offsetYAnimation = Tween<double>(begin: 0, end: 0)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: Curves.linear));
+    _animationSettings.rotationAnimation = Tween<double>(begin: 0, end: 0)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: Curves.linear));
+    _animationSettings.blurXAnimation = Tween<double>(begin: 0, end: 0).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    _animationSettings.blurYAnimation = Tween<double>(begin: 0, end: 0).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    _animationSettings.skewXAnimation = Tween<double>(begin: 0, end: 0).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    _animationSettings.skewYAnimation = Tween<double>(begin: 0, end: 0).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.linear));
+
+    widgetKey =
+        widget.child?.key ?? const ValueKey('default-widget-animator-key');
     childToDisplay = widget.child;
     outgoingTransitionToDisplay = widget.outgoingEffect;
 
@@ -128,20 +153,18 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     _initIncoming();
   }
 
-
-
   void _addAnimationListener() {
     _animationController.addStatusListener((status) {
       if (widgetAnimationStatus == _WidgetAnimationStatus.incoming) {
         if (status == AnimationStatus.completed) {
-            ///switch from the incoming animation completing to the 'atRest' state
-            _initAtRest();
-            if (widget.onIncomingAnimationComplete!=null && widget.child!=null) {
-              ///trigger the callback once the incoming animation has completed
-              widget.onIncomingAnimationComplete!(widget.child?.key);
-            }
+          ///switch from the incoming animation completing to the 'atRest' state
+          _initAtRest();
+          if (widget.onIncomingAnimationComplete != null &&
+              widget.child != null) {
+            ///trigger the callback once the incoming animation has completed
+            widget.onIncomingAnimationComplete!(widget.child?.key);
+          }
         }
-
       } else if (widgetAnimationStatus == _WidgetAnimationStatus.rest) {
         if (status == AnimationStatus.completed) {
           ///increment the number of times an animation at rest has played
@@ -164,7 +187,8 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
           childToDisplay = childToHold;
           outgoingTransitionToDisplay = outgoingTransitionToHold;
           _initIncoming();
-          if (widget.onOutgoingAnimationComplete!=null && widget.child!=null) {
+          if (widget.onOutgoingAnimationComplete != null &&
+              widget.child != null) {
             ///trigger the callback now the outgoing animation has completed
             widget.onOutgoingAnimationComplete!(widget.child?.key);
           }
@@ -173,118 +197,233 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     });
   }
 
-  void _initIncoming() async{
+  void _initIncoming() async {
     ///Initialise or create the incoming effect and set defaults for items not specified
-    WidgetTransitionEffects incomingEffect = widget.incomingEffect ?? WidgetTransitionEffects(opacity: 1000, duration: const Duration(milliseconds: 1));
+    WidgetTransitionEffects incomingEffect = widget.incomingEffect ??
+        WidgetTransitionEffects(
+            opacity: 1000, duration: const Duration(milliseconds: 1));
 
-    Duration incomingDelay = incomingEffect.delay??const Duration(milliseconds: 0);
-    Duration incomingDuration = incomingEffect.duration ??  const Duration(milliseconds: 300);
+    Duration incomingDelay =
+        incomingEffect.delay ?? const Duration(milliseconds: 0);
+    Duration incomingDuration =
+        incomingEffect.duration ?? const Duration(milliseconds: 300);
     Curve incomingCurve = incomingEffect.curve ?? Curves.easeInOut;
+
     ///set the animation status
     widgetAnimationStatus = _WidgetAnimationStatus.incoming;
 
     ///set the animation to the start and set the duration
     _animationController.value = 0;
-    _animationController.duration = Duration(milliseconds: incomingDuration.inMilliseconds + incomingDelay.inMilliseconds);
+    _animationController.duration = Duration(
+        milliseconds:
+            incomingDuration.inMilliseconds + incomingDelay.inMilliseconds);
 
-    if (incomingEffect.builder!=null){
+    if (incomingEffect.builder != null) {
       ///a builder was supplied so set the animation settings based upon this
-      _animationSettings = incomingEffect.builder!(incomingEffect, _animationController);
-    }
-    else if (incomingEffect.style!=WidgetTransitionEffectStyle.none){
+      _animationSettings =
+          incomingEffect.builder!(incomingEffect, _animationController);
+    } else if (incomingEffect.style != WidgetTransitionEffectStyle.none) {
       ///a style for the transition animation was supplied so set the animations settings based on the style
-      switch (incomingEffect.style){
+      switch (incomingEffect.style) {
         case WidgetTransitionEffectStyle.incomingOffsetAndThenScale:
-          _animationSettings = AnimationIncomingTransitionOffsetAndScale().getSettings(incomingEffect, _animationController);
+          _animationSettings = AnimationIncomingTransitionOffsetAndScale()
+              .getSettings(incomingEffect, _animationController);
           break;
         case WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep:
-          _animationSettings = AnimationIncomingTransitionOffsetAndScaleAndStep().getSettings(incomingEffect, _animationController);
+          _animationSettings =
+              AnimationIncomingTransitionOffsetAndScaleAndStep()
+                  .getSettings(incomingEffect, _animationController);
           break;
         default:
           break;
       }
-    }
-    else {
+    } else {
       ///no style was specified, so work through all the transition settings and set a tween sequence for each type
-      _animationSettings.opacityAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 1).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.opacityAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(begin: 0, end: 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: 0, end: 1)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.scaleAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.scale ?? 0, end: incomingEffect.scale ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.scale ?? 1, end: 1).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.scaleAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.scale ?? 0,
+                      end: incomingEffect.scale ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.scale ?? 1, end: 1)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.offsetXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: incomingEffect.offset?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.offsetXAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.offset?.dx ?? 0,
+                      end: incomingEffect.offset?.dx ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween:
+                  Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: 0)
+                      .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.offsetYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: incomingEffect.offset?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.offsetYAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.offset?.dy ?? 0,
+                      end: incomingEffect.offset?.dy ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween:
+                  Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: 0)
+                      .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.rotationAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: incomingEffect.rotation ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.rotationAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.rotation ?? 0,
+                      end: incomingEffect.rotation ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: 0)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.blurXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: incomingEffect.blur?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.blurXAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.blur?.dx ?? 0,
+                      end: incomingEffect.blur?.dx ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: 0)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.blurYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: incomingEffect.blur?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.blurYAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.blur?.dy ?? 0,
+                      end: incomingEffect.blur?.dy ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: 0)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-      _animationSettings.skewXAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: incomingEffect.skew?.dx ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.skewXAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.skew?.dx ?? 0,
+                      end: incomingEffect.skew?.dx ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: 0)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
 
-
-      _animationSettings.skewYAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
-        if (incomingDelay.inMilliseconds.toDouble() > 0) TweenSequenceItem<double>(
-          tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: incomingEffect.skew?.dy ?? 0).chain(CurveTween(curve: Curves.ease)), weight: incomingDelay.inMilliseconds.toDouble(),),
-        TweenSequenceItem<double>(tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: 0).chain(CurveTween(curve: incomingCurve)), weight: incomingDuration.inMilliseconds.toDouble()),
-      ],
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+      _animationSettings.skewYAnimation = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          if (incomingDelay.inMilliseconds.toDouble() > 0)
+            TweenSequenceItem<double>(
+              tween: Tween<double>(
+                      begin: incomingEffect.skew?.dy ?? 0,
+                      end: incomingEffect.skew?.dy ?? 0)
+                  .chain(CurveTween(curve: Curves.ease)),
+              weight: incomingDelay.inMilliseconds.toDouble(),
+            ),
+          TweenSequenceItem<double>(
+              tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: 0)
+                  .chain(CurveTween(curve: incomingCurve)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
+        ],
+      ).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.linear));
     }
 
     ///play the incoming animation
     _animationController.forward();
-
-
   }
 
   void _initAtRest() async {
     ///Initialise or create the at rest animation and set defaults for items not specified
-    WidgetRestingEffects restingEffects = widget.atRestEffect ?? WidgetRestingEffects(style: WidgetRestingEffectStyle.none, delay: const Duration(days: 0), duration: const Duration(days: 1), effectStrength: 1, alignment: Alignment.center, curve: Curves.linear);
+    WidgetRestingEffects restingEffects = widget.atRestEffect ??
+        WidgetRestingEffects(
+            style: WidgetRestingEffectStyle.none,
+            delay: const Duration(days: 0),
+            duration: const Duration(days: 1),
+            effectStrength: 1,
+            alignment: Alignment.center,
+            curve: Curves.linear);
 
-    assert(!(restingEffects.style==null&&restingEffects.builder==null), 'You must specify either a style or a builder, but neither were supplied');
-    assert(!(restingEffects.style!=null&&restingEffects.builder!=null), 'You must specify either a style or a builder, but not both');
+    assert(!(restingEffects.style == null && restingEffects.builder == null),
+        'You must specify either a style or a builder, but neither were supplied');
+    assert(!(restingEffects.style != null && restingEffects.builder != null),
+        'You must specify either a style or a builder, but not both');
 
-    Duration restDuration = restingEffects.duration ??  const Duration(milliseconds: 2400);
+    Duration restDuration =
+        restingEffects.duration ?? const Duration(milliseconds: 2400);
     restingEffects.effectStrength = restingEffects.effectStrength ?? 1;
     restingEffects.curve = restingEffects.curve ?? Curves.easeInOut;
 
@@ -299,61 +438,73 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
     _animationController.value = 0;
     _animationController.duration = restDuration;
 
-
-
-    if (restingEffects.style!=null) {
+    if (restingEffects.style != null) {
       ///a style has been specified so make a call to that style to get the animation settings
       switch (restingEffects.style) {
         case WidgetRestingEffectStyle.pulse:
-          _animationSettings = AnimationStylePulse().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStylePulse()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.rotate:
-          _animationSettings = AnimationStyleRotate().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleRotate()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.bounce:
-          _animationSettings = AnimationStyleBounce().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleBounce()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.slide:
-          _animationSettings = AnimationStyleSlide().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleSlide()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.dangle:
-          _animationSettings = AnimationStyleDangle().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleDangle()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.swing:
-          _animationSettings = AnimationStyleSwing().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleSwing()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.wave:
-          _animationSettings = AnimationStyleWave().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleWave()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.size:
-          _animationSettings = AnimationStyleSize().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleSize()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.fidget:
-          _animationSettings = AnimationStyleFidget().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleFidget()
+              .getSettings(restingEffects, _animationController);
           break;
         case WidgetRestingEffectStyle.vibrate:
-          _animationSettings = AnimationStyleVibrate().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleVibrate()
+              .getSettings(restingEffects, _animationController);
           break;
         default:
-          _animationSettings = AnimationStyleNone().getSettings(restingEffects, _animationController);
+          _animationSettings = AnimationStyleNone()
+              .getSettings(restingEffects, _animationController);
           break;
       }
-    }
-    else{
+    } else {
       ///we don't have a style then we'll have a builder for a custom animation
-      _animationSettings = restingEffects.builder!(restingEffects, _animationController);
+      _animationSettings =
+          restingEffects.builder!(restingEffects, _animationController);
     }
 
     ///play the animation, unless one isn't required
-    if (restingEffects.style!=WidgetRestingEffectStyle.none) {
+    if (restingEffects.style != WidgetRestingEffectStyle.none) {
       _animationController.forward();
     }
   }
 
-  void _initOutgoing() async{
+  void _initOutgoing() async {
     ///Initialise or create the incoming effect and set defaults for items not specified
-    WidgetTransitionEffects outgoingEffect = outgoingTransitionToDisplay ?? WidgetTransitionEffects(opacity: 1, duration: const Duration(milliseconds: 1));
-    Duration outgoingDuration = outgoingEffect.duration ??  const Duration(milliseconds: 300);
+    WidgetTransitionEffects outgoingEffect = outgoingTransitionToDisplay ??
+        WidgetTransitionEffects(
+            opacity: 1, duration: const Duration(milliseconds: 1));
+    Duration outgoingDuration =
+        outgoingEffect.duration ?? const Duration(milliseconds: 300);
     Curve outgoingCurve = outgoingEffect.curve ?? Curves.easeInOut;
     if (mounted) {
       setState(() {
@@ -364,50 +515,73 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
 
     _animationController.duration = outgoingDuration;
 
-    if (outgoingEffect.builder!=null){
+    if (outgoingEffect.builder != null) {
       ///a builder was specified, so use its data as the animation settings
-      _animationSettings = outgoingEffect.builder!(outgoingEffect, _animationController);
-    }
-    else if (outgoingEffect.style!=WidgetTransitionEffectStyle.none){
+      _animationSettings =
+          outgoingEffect.builder!(outgoingEffect, _animationController);
+    } else if (outgoingEffect.style != WidgetTransitionEffectStyle.none) {
       ///a style was specified so use this for the animation settings
-      switch (outgoingEffect.style){
+      switch (outgoingEffect.style) {
         case WidgetTransitionEffectStyle.outgoingOffsetAndThenScale:
-          _animationSettings = AnimationOutgoingTransitionOffsetAndScale().getSettings(outgoingEffect, _animationController);
+          _animationSettings = AnimationOutgoingTransitionOffsetAndScale()
+              .getSettings(outgoingEffect, _animationController);
           break;
         default:
           break;
       }
-    }
-
-    else {
+    } else {
       ///no builder or style specified so use the specific properties to set up the animation tween settings
-      _animationSettings.opacityAnimation =
-          Tween<double>(begin: _animationSettings.opacityAnimation?.value, end: outgoingEffect.opacity ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.scaleAnimation =
-          Tween<double>(begin: _animationSettings.scaleAnimation?.value, end: outgoingEffect.scale ?? 1).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.offsetXAnimation =
-          Tween<double>(begin: _animationSettings.offsetXAnimation?.value, end: outgoingEffect.offset?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.offsetYAnimation =
-          Tween<double>(begin: _animationSettings.offsetYAnimation?.value, end: outgoingEffect.offset?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.rotationAnimation =
-          Tween<double>(begin: _animationSettings.rotationAnimation?.value, end: outgoingEffect.rotation ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.blurXAnimation =
-          Tween<double>(begin: _animationSettings.blurXAnimation?.value, end: outgoingEffect.blur?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.blurYAnimation =
-          Tween<double>(begin: _animationSettings.blurYAnimation?.value, end: outgoingEffect.blur?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.skewXAnimation =
-          Tween<double>(begin: _animationSettings.skewXAnimation?.value, end: outgoingEffect.skew?.dx ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
-      _animationSettings.skewYAnimation =
-          Tween<double>(begin: _animationSettings.skewYAnimation?.value, end: outgoingEffect.skew?.dy ?? 0).animate(CurvedAnimation(parent: _animationController, curve: outgoingCurve));
+      _animationSettings.opacityAnimation = Tween<double>(
+              begin: _animationSettings.opacityAnimation?.value,
+              end: outgoingEffect.opacity ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.scaleAnimation = Tween<double>(
+              begin: _animationSettings.scaleAnimation?.value,
+              end: outgoingEffect.scale ?? 1)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.offsetXAnimation = Tween<double>(
+              begin: _animationSettings.offsetXAnimation?.value,
+              end: outgoingEffect.offset?.dx ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.offsetYAnimation = Tween<double>(
+              begin: _animationSettings.offsetYAnimation?.value,
+              end: outgoingEffect.offset?.dy ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.rotationAnimation = Tween<double>(
+              begin: _animationSettings.rotationAnimation?.value,
+              end: outgoingEffect.rotation ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.blurXAnimation = Tween<double>(
+              begin: _animationSettings.blurXAnimation?.value,
+              end: outgoingEffect.blur?.dx ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.blurYAnimation = Tween<double>(
+              begin: _animationSettings.blurYAnimation?.value,
+              end: outgoingEffect.blur?.dy ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.skewXAnimation = Tween<double>(
+              begin: _animationSettings.skewXAnimation?.value,
+              end: outgoingEffect.skew?.dx ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
+      _animationSettings.skewYAnimation = Tween<double>(
+              begin: _animationSettings.skewYAnimation?.value,
+              end: outgoingEffect.skew?.dy ?? 0)
+          .animate(CurvedAnimation(
+              parent: _animationController, curve: outgoingCurve));
       _animationController.value = 0;
     }
 
     ///play the outgoing animation
     _animationController.forward();
-
   }
-
-
 
   @override
   void dispose() {
@@ -416,25 +590,27 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
   }
 
   ///the widget has changed (either [Key] or widget type), so store the new details ready for when the previous outgoing animation has completed
-  void _widgetChanged(){
+  void _widgetChanged() {
     if (mounted) {
       setState(() {
-        widgetKey = widget.child?.key ?? const ValueKey('default-widget-animator-key');
+        widgetKey =
+            widget.child?.key ?? const ValueKey('default-widget-animator-key');
         childToHold = widget.child;
         outgoingTransitionToHold = widget.outgoingEffect;
       });
     }
+
     ///start outgoing animation
     _initOutgoing();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     ///check to see if the widget has changed [Key] or it's type, if it has, trigger a change
-    Key widgetChild = widget.child?.key??const ValueKey('default-widget-animator-key');
-    if ((widgetChild!=widgetKey)||(widget.child.runtimeType!=childToDisplay.runtimeType)){
+    Key widgetChild =
+        widget.child?.key ?? const ValueKey('default-widget-animator-key');
+    if ((widgetChild != widgetKey) ||
+        (widget.child.runtimeType != childToDisplay.runtimeType)) {
       _widgetChanged();
     }
 
@@ -449,7 +625,8 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
               angle: _animationSettings.rotationAnimation!.value,
               child: _OptionalSkew(
                 alignment: _animationSettings.skewAlignment,
-                skewX: _animationSettings.skewXAnimation!.value, skewY: _animationSettings.skewYAnimation!.value,
+                skewX: _animationSettings.skewXAnimation!.value,
+                skewY: _animationSettings.skewYAnimation!.value,
                 child: _OptionalTranslate(
                   offsetX: _animationSettings.offsetXAnimation!.value,
                   offsetY: _animationSettings.offsetYAnimation!.value,
@@ -457,7 +634,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator> with SingleTickerProvid
                     scale: _animationSettings.scaleAnimation!.value,
                     child: _OptionalOpacity(
                       opacity: _animationSettings.opacityAnimation!.value,
-                      child: childToDisplay??const SizedBox(),
+                      child: childToDisplay ?? const SizedBox(),
                     ),
                   ),
                 ),
@@ -473,17 +650,19 @@ class _OptionalFiltered extends StatelessWidget {
   final Widget child;
   final double blurX;
   final double blurY;
-  const _OptionalFiltered({Key? key, required this.child, required this.blurX, required this.blurY}) : super(key: key);
+  const _OptionalFiltered(
+      {Key? key, required this.child, required this.blurX, required this.blurY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (blurX>0||blurY>0){
+    if (blurX > 0 || blurY > 0) {
       return ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: blurX.clamp(0.001, 1000), sigmaY: blurY.clamp(0.001, 1000)),
+        imageFilter: ImageFilter.blur(
+            sigmaX: blurX.clamp(0.001, 1000), sigmaY: blurY.clamp(0.001, 1000)),
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
@@ -494,22 +673,25 @@ class _OptionalTranslate extends StatelessWidget {
   final Widget child;
   final double offsetX;
   final double offsetY;
-  const _OptionalTranslate({Key? key, required this.child, required this.offsetX, required this.offsetY}) : super(key: key);
+  const _OptionalTranslate(
+      {Key? key,
+      required this.child,
+      required this.offsetX,
+      required this.offsetY})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (offsetX!=0||offsetY!=0){
+    if (offsetX != 0 || offsetY != 0) {
       return Transform.translate(
         offset: Offset(offsetX, offsetY),
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
 }
-
 
 /// [_OptionalSkew] this widget will either just pass the child straight through or apply the skew effects if specified
 class _OptionalSkew extends StatelessWidget {
@@ -517,61 +699,66 @@ class _OptionalSkew extends StatelessWidget {
   final double skewX;
   final double skewY;
   final Alignment? alignment;
-  const _OptionalSkew({Key? key, required this.child, required this.skewX, required this.skewY, this.alignment}) : super(key: key);
+  const _OptionalSkew(
+      {Key? key,
+      required this.child,
+      required this.skewX,
+      required this.skewY,
+      this.alignment})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (skewX!=0||skewY!=0){
+    if (skewX != 0 || skewY != 0) {
       return Transform(
-        transform: Matrix4.skew(skewX.clamp(-2, 2), skewY.clamp(-2, 2), ),
+        transform: Matrix4.skew(
+          skewX.clamp(-2, 2),
+          skewY.clamp(-2, 2),
+        ),
         alignment: alignment,
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
 }
-
-
 
 /// [_OptionalRotate] this widget will either just pass the child straight through or apply the rotation effects if specified
 class _OptionalRotate extends StatelessWidget {
   final Widget child;
   final double angle;
-  const _OptionalRotate({Key? key, required this.child, required this.angle}) : super(key: key);
+  const _OptionalRotate({Key? key, required this.child, required this.angle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (angle!=0){
+    if (angle != 0) {
       return Transform.rotate(
         angle: angle,
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
 }
 
-
 /// [_OptionalScale] this widget will either just pass the child straight through or apply the scale effects if specified
 class _OptionalScale extends StatelessWidget {
   final Widget child;
   final double scale;
-  const _OptionalScale({Key? key, required this.child, required this.scale}) : super(key: key);
+  const _OptionalScale({Key? key, required this.child, required this.scale})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (scale!=1){
+    if (scale != 1) {
       return Transform.scale(
         scale: scale,
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
@@ -581,26 +768,24 @@ class _OptionalScale extends StatelessWidget {
 class _OptionalOpacity extends StatelessWidget {
   final Widget child;
   final double opacity;
-  const _OptionalOpacity({Key? key, required this.child, required this.opacity}) : super(key: key);
+  const _OptionalOpacity({Key? key, required this.child, required this.opacity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (opacity!=1){
+    if (opacity != 1) {
       return Opacity(
         opacity: opacity.clamp(0, 1),
         child: child,
       );
-    }
-    else{
+    } else {
       return child;
     }
   }
 }
 
-
-
 ///Class for setting up the incoming or outgoing transition effects
-class WidgetTransitionEffects{
+class WidgetTransitionEffects {
   /// [Offset] set up the offset from the position that the widget would normally render, e.g. Offset(50, 20) would render 50 pixels to the right and 20 below the normal location
   /// Offset(-50, -20) would render 50 pixels to the left and 20 above the normal location
   final Offset? offset;
@@ -640,58 +825,232 @@ class WidgetTransitionEffects{
 
   static Duration defaultDuration = const Duration(milliseconds: 300);
 
-
   @protected
-  WidgetTransitionEffects.withStyle({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder, required this.style});
+  WidgetTransitionEffects.withStyle(
+      {this.offset,
+      this.opacity,
+      this.scale,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.duration,
+      this.delay,
+      this.builder,
+      required this.style});
 
   ///Default constructor with the ability to specify and values available)
-  WidgetTransitionEffects({this.offset, this.opacity, this.scale, this.blur, this.rotation, this.curve, this.skew, this.duration, this.delay, this.builder}) : style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects(
+      {this.offset,
+      this.opacity,
+      this.scale,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.duration,
+      this.delay,
+      this.builder})
+      : style = WidgetTransitionEffectStyle.none;
 
   ///Default scale transitions
-  WidgetTransitionEffects.incomingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.incomingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingScaleDown({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 0, style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingScaleUp({this.offset, this.opacity, this.blur, this.rotation, this.curve, this.skew, this.delay, this.duration}) : scale = 3, style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingScaleDown(
+      {this.offset,
+      this.opacity,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.delay,
+      this.duration})
+      : scale = 3,
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingScaleUp(
+      {this.offset,
+      this.opacity,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.delay,
+      this.duration})
+      : scale = 0,
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingScaleDown(
+      {this.offset,
+      this.opacity,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.delay,
+      this.duration})
+      : scale = 0,
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingScaleUp(
+      {this.offset,
+      this.opacity,
+      this.blur,
+      this.rotation,
+      this.curve,
+      this.skew,
+      this.delay,
+      this.duration})
+      : scale = 3,
+        style = WidgetTransitionEffectStyle.none;
 
   ///Default slide transitions
-  WidgetTransitionEffects.incomingSlideInFromLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.incomingSlideInFromRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.incomingSlideInFromTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.incomingSlideInFromBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingSlideOutToLeft({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(-150,0), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingSlideOutToRight({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(150,0), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingSlideOutToTop({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0,-150), style = WidgetTransitionEffectStyle.none;
-  WidgetTransitionEffects.outgoingSlideOutToBottom({this.opacity, this.rotation, this.skew, this.delay, this.scale, this.curve, this.blur, this.duration}) : offset = const Offset(0, 150), style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromLeft(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(-150, 0),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromRight(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(150, 0),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromTop(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(0, -150),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.incomingSlideInFromBottom(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(0, 150),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToLeft(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(-150, 0),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToRight(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(150, 0),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToTop(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(0, -150),
+        style = WidgetTransitionEffectStyle.none;
+  WidgetTransitionEffects.outgoingSlideOutToBottom(
+      {this.opacity,
+      this.rotation,
+      this.skew,
+      this.delay,
+      this.scale,
+      this.curve,
+      this.blur,
+      this.duration})
+      : offset = const Offset(0, 150),
+        style = WidgetTransitionEffectStyle.none;
 
   ///Default style transitions
-  WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
-  WidgetTransitionEffects.incomingOffsetThenScaleAndStep({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
-  WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay}) : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale, rotation = 0, scale = 1, skew = const Offset(0,0), blur = const Offset(0, 0), offset = const Offset(0,0), opacity = 1, curve = Curves.linear;
+  WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay})
+      : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale,
+        rotation = 0,
+        scale = 1,
+        skew = const Offset(0, 0),
+        blur = const Offset(0, 0),
+        offset = const Offset(0, 0),
+        opacity = 1,
+        curve = Curves.linear;
+  WidgetTransitionEffects.incomingOffsetThenScaleAndStep(
+      {this.duration, this.delay})
+      : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep,
+        rotation = 0,
+        scale = 1,
+        skew = const Offset(0, 0),
+        blur = const Offset(0, 0),
+        offset = const Offset(0, 0),
+        opacity = 1,
+        curve = Curves.linear;
+  WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay})
+      : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale,
+        rotation = 0,
+        scale = 1,
+        skew = const Offset(0, 0),
+        blur = const Offset(0, 0),
+        offset = const Offset(0, 0),
+        opacity = 1,
+        curve = Curves.linear;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is WidgetTransitionEffects &&
-              runtimeType == other.runtimeType &&
-              offset == other.offset &&
-              scale == other.scale &&
-              opacity == other.opacity &&
-              builder == other.builder &&
-              blur == other.blur &&
-              skew == other.skew &&
-              rotation == other.rotation &&
-              duration == other.duration &&
-              delay == other.delay &&
-              curve == other.curve;
+      other is WidgetTransitionEffects &&
+          runtimeType == other.runtimeType &&
+          offset == other.offset &&
+          scale == other.scale &&
+          opacity == other.opacity &&
+          builder == other.builder &&
+          blur == other.blur &&
+          skew == other.skew &&
+          rotation == other.rotation &&
+          duration == other.duration &&
+          delay == other.delay &&
+          curve == other.curve;
 
   @override
-  int get hashCode => offset.hashCode ^ builder.hashCode ^ scale.hashCode ^ duration.hashCode ^ delay.hashCode ^ skew.hashCode ^ opacity.hashCode^ blur.hashCode^ rotation.hashCode ^ curve.hashCode;
+  int get hashCode =>
+      offset.hashCode ^
+      builder.hashCode ^
+      scale.hashCode ^
+      duration.hashCode ^
+      delay.hashCode ^
+      skew.hashCode ^
+      opacity.hashCode ^
+      blur.hashCode ^
+      rotation.hashCode ^
+      curve.hashCode;
 }
 
-
-
 ///Class for setting up the animation effects to play while the widget is not transitioning on or off the screen
-class WidgetRestingEffects{
+class WidgetRestingEffects {
   /// [WidgetRestingEffectStyle] specify either a style or a builder, a _style_ is selected from the Enum from the default options available
   WidgetRestingEffectStyle? style;
 
@@ -716,22 +1075,115 @@ class WidgetRestingEffects{
   double? effectStrength;
   Duration? delay;
 
+  WidgetRestingEffects(
+      {this.style,
+      this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay});
 
-  WidgetRestingEffects({this.style, this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay});
-
-  WidgetRestingEffects.wave({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.wave;
-  WidgetRestingEffects.pulse({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.pulse;
-  WidgetRestingEffects.rotate({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.rotate;
-  WidgetRestingEffects.bounce({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.bounce;
-  WidgetRestingEffects.slide({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.slide;
-  WidgetRestingEffects.swing({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.swing;
-  WidgetRestingEffects.size({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.size;
-  WidgetRestingEffects.fidget({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.fidget;
-  WidgetRestingEffects.dangle({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.dangle;
-  WidgetRestingEffects.vibrate({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.vibrate;
-  WidgetRestingEffects.none({this.builder, this.duration, this.alignment, this.curve, this.numberOfPlays, this.effectStrength, this.delay}) : style = WidgetRestingEffectStyle.none;
-
-
+  WidgetRestingEffects.wave(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.wave;
+  WidgetRestingEffects.pulse(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.pulse;
+  WidgetRestingEffects.rotate(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.rotate;
+  WidgetRestingEffects.bounce(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.bounce;
+  WidgetRestingEffects.slide(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.slide;
+  WidgetRestingEffects.swing(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.swing;
+  WidgetRestingEffects.size(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.size;
+  WidgetRestingEffects.fidget(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.fidget;
+  WidgetRestingEffects.dangle(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.dangle;
+  WidgetRestingEffects.vibrate(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.vibrate;
+  WidgetRestingEffects.none(
+      {this.builder,
+      this.duration,
+      this.alignment,
+      this.curve,
+      this.numberOfPlays,
+      this.effectStrength,
+      this.delay})
+      : style = WidgetRestingEffectStyle.none;
 
   @override
   bool operator ==(Object other) =>
@@ -748,8 +1200,13 @@ class WidgetRestingEffects{
           delay == other.delay;
 
   @override
-  int get hashCode => style.hashCode ^ builder.hashCode^ duration.hashCode ^ alignment.hashCode ^ curve.hashCode ^ numberOfPlays.hashCode ^ effectStrength.hashCode ^ delay.hashCode;
+  int get hashCode =>
+      style.hashCode ^
+      builder.hashCode ^
+      duration.hashCode ^
+      alignment.hashCode ^
+      curve.hashCode ^
+      numberOfPlays.hashCode ^
+      effectStrength.hashCode ^
+      delay.hashCode;
 }
-
-
-
