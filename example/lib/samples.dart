@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -125,7 +126,15 @@ class Samples extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(_Fun.route());
                       },
-                      child: const Text('Sample')),
+                      child: const Text('Breathing')),
+                  incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 2000)),
+                ),
+                WidgetAnimator(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(_Fun2.route());
+                      },
+                      child: const Text('Demo')),
                   incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(delay: const Duration(milliseconds: 2000)),
                 )
               ],
@@ -2804,6 +2813,25 @@ class _FunState extends State<_Fun> {
                               )),
                         )),
                     Positioned(
+                        top: 85,
+                        left: 35,
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).pop();
+                          },
+                          child: WidgetAnimator(
+                              incomingEffect: WidgetTransitionEffects(duration: const Duration(milliseconds: 800), offset: const Offset(0, 100), scale: 0.6, opacity: 0.1, curve: Curves.bounceOut),
+                              atRestEffect: WidgetRestingEffects.size(duration: const Duration(seconds: 10), effectStrength: 0.5, curve: Curves.easeInOut),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    color: Colors.orange,
+                                    shape: BoxShape.circle
+                                ),
+                                width: 100,
+                                height: 100,
+                              )),
+                        )),
+                    Positioned(
                         top: 50,
                         left: -150,
                         child: WidgetAnimatorSequence(
@@ -2911,5 +2939,185 @@ class _FunState extends State<_Fun> {
                 ))),
       ),
     );
+  }
+}
+
+
+
+class _Fun2 extends StatefulWidget {
+  const _Fun2({Key? key}) : super(key: key);
+
+  static Route<dynamic> route() {
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return const _Fun2();
+    });
+  }
+
+  @override
+  State<_Fun2> createState() => _Fun2State();
+}
+
+class _Fun2State extends State<_Fun2> {
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Theme(
+      data: ThemeData(
+          brightness: Brightness.dark
+      ),
+      child: WillPopScope(
+        onWillPop: ()async{
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(),
+            body: Center(child: WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(delay: const Duration(milliseconds: 500)),
+              //atRestEffect: WidgetRestingEffects.swing(),
+              child: SizedBox(
+                width: 390,
+                height: 390,
+                child: Stack(
+                  children: [
+                    Container(color: const Color(0xffc86490),),
+                      Column(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: WidgetAnimator(
+                                        incomingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, -250), delay: const Duration(milliseconds: 500), curve: Curves.decelerate),
+                                        outgoingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, -250), delay: const Duration(milliseconds: 500), curve: Curves.easeIn),
+                                        child: Container(
+                                          key: const ValueKey('b'),
+                                          height: 195,
+                                          color: const Color(0xff94bbe9),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(child: Container()),
+                                                TextAnimator('widget', initialDelay: const Duration(milliseconds: 1000),
+                                                    spaceDelay: const Duration(milliseconds: 300),
+                                                    characterDelay: const Duration(milliseconds: 0),
+                                                    incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(),
+                                                    style:  GoogleFonts.lato(textStyle: const TextStyle(height: 0.8, fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 56, ))),
+                                                TextAnimator('and text', initialDelay: const Duration(milliseconds: 1200),
+                                                  spaceDelay: const Duration(milliseconds: 0),
+                                                  characterDelay: const Duration(milliseconds: 180),
+                                                  incomingEffect: WidgetTransitionEffects(rotation: math.pi/3, scale: 2.5),
+                                                  style: GoogleFonts.lato(textStyle: const TextStyle(height: 0.8, fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 48)), ),
+                                                TextAnimator('animator',
+                                                    spaceDelay: const Duration(milliseconds: 0),
+                                                    characterDelay: const Duration(milliseconds: 180),
+                                                    incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
+                                                    atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.8),
+                                                    initialDelay: const Duration(milliseconds: 1900),
+                                                    style: GoogleFonts.lato(textStyle: const TextStyle(height: 0.9, fontWeight: FontWeight.w900, letterSpacing: -2, fontSize: 44))),
+                                              ],
+                                            ),
+                                          ),
+                                        ))),
+                                Expanded(
+                                    child: WidgetAnimator(
+                                        incomingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, -250), delay: const Duration(milliseconds: 700), curve: Curves.decelerate),
+                                        outgoingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, -250), delay: const Duration(milliseconds: 700), curve: Curves.easeIn),
+                                        child: Container(
+                                            height: 195,
+                                            key: const ValueKey('d'), color: const Color(0xffb4b6de),
+                                            child: WidgetAnimator(
+                                                incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(duration: const Duration(seconds: 1), delay: const Duration(milliseconds: 2750), curve: Curves.bounceOut),
+                                                atRestEffect: WidgetRestingEffects.rotate(effectStrength: 1, curve: Curves.linear),
+                                                child: const Icon(Icons.sports_baseball, color: Color(0x668563ad),size: 48))))),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: WidgetAnimator(
+                                        incomingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, 250), delay: const Duration(milliseconds: 1100), curve: Curves.decelerate),
+                                        outgoingEffect: WidgetTransitionEffects(blur: const Offset(0, 4), offset: const Offset(0, 250), delay: const Duration(milliseconds: 1100), curve: Curves.easeIn),
+                                        child: Container(
+                                            height: 195,
+                                            key: const ValueKey('z'), color: const Color(0xffadd599),
+                                            child: WidgetAnimator(
+                                                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(duration: const Duration(seconds: 2), delay: const Duration(milliseconds: 4750), curve: Curves.elasticOut),
+                                                atRestEffect: WidgetRestingEffects(
+                                                        effectStrength: 0.5,
+                                                        duration: const Duration(milliseconds: 500),
+                                                        curve: Curves.easeInOut,
+                                                        builder: (WidgetRestingEffects effects, AnimationController animationController) {
+                                                          AnimationSettings _animationSettings = AnimationSettings(animationController: animationController);
+
+                                                          double rotationAmount = 18;
+                                                          rotationAmount = (-rotationAmount*(effects.effectStrength!)).clamp(-300, 300);
+
+                                                          _animationSettings.offsetYAnimation = TweenSequence<double>(
+                                                            <TweenSequenceItem<double>>[
+                                                              TweenSequenceItem<double>(
+                                                                tween: Tween<double>(begin: 0, end: 6)
+                                                                    .chain(CurveTween(curve: Curves.easeInOut)),
+                                                                weight: 50.0,
+                                                              ),
+                                                              TweenSequenceItem<double>(
+                                                                tween: Tween<double>(begin: 6, end: 0)
+                                                                    .chain(CurveTween(curve: Curves.bounceOut)),
+                                                                weight: 50.0,
+                                                              ),
+                                                            ],
+                                                          ).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));
+
+
+                                                          _animationSettings.rotationAnimation = TweenSequence<double>(
+                                                            <TweenSequenceItem<double>>[
+                                                              TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 0).chain(CurveTween(curve: Curves.linear)),weight: 65.0,),
+                                                              TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: math.pi/rotationAmount).chain(CurveTween(curve: Curves.easeInOut)),weight: 25.0,),
+                                                              TweenSequenceItem<double>(tween: Tween<double>(begin: math.pi/rotationAmount, end: -math.pi/rotationAmount).chain(CurveTween(curve: Curves.easeInOut)),weight: 50.0,),
+                                                              TweenSequenceItem<double>(tween: Tween<double>(begin: -math.pi/rotationAmount, end: 0).chain(CurveTween(curve: Curves.easeInOut)),weight: 25.0,),
+                                                            ],
+                                                          ).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));
+
+                                                          return _animationSettings;
+
+                                                        }),
+                                                child: const Icon(Icons.ring_volume, color: Color(0x66758b6b),size: 48))
+
+                                        ))),
+                                Expanded(
+                                    child: WidgetAnimator(
+                                        incomingEffect: WidgetTransitionEffects(blur: const Offset(4, 0), offset: const Offset(250, 0), delay: const Duration(milliseconds: 900), curve: Curves.decelerate),
+                                        outgoingEffect: WidgetTransitionEffects(blur: const Offset(4, 0), offset: const Offset(250, 0), delay: const Duration(milliseconds: 900), curve: Curves.easeIn),
+                                        child: Container(key: const ValueKey('h'),
+                                            height: 195,
+                                            child: WidgetAnimator(
+                                                incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(duration: const Duration(seconds: 3), delay: const Duration(seconds: 2)),
+                                                atRestEffect: WidgetRestingEffects.size(effectStrength: 1),
+                                                child: const Icon(Icons.airplanemode_active, color: const Color(0xffd67cbf),size: 48)),
+                                            color: const Color(0xffeeaeca)))),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),)
+
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

@@ -612,7 +612,7 @@ class WidgetTransitionEffects{
   /// then one to increase the size
   final double? scale;
 
-  /// [Offset] Blue, the amount of blue on the X and Y axis e.g. Offset(2, 5) would be a blur of 2 on the X axis
+  /// [Offset] Blur, the amount of blur on the X and Y axis e.g. Offset(2, 5) would be a blur of 2 on the X axis
   /// and 5 on the Y axis, note that this effect can be quite performance intensive, so try to limit the amount it's used
   final Offset? blur;
 

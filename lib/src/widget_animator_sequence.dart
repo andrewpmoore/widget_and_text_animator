@@ -17,11 +17,11 @@ class WidgetAnimatorSequence extends StatefulWidget {
   /// [bool] once the end of the sequence is reached, does the list loop back ground to the start again, default is false
   final bool? loop;
 
-  /// [Duration] The length of time to wait between changing the text once in input transition has completed,
+  /// [Duration] The length of time to wait between changing the widget once in input transition has completed,
   /// not specifying a duration will mean it won't change the sequence automatically
   final Duration? transitionTime;
 
-  /// [Function] callback function to perform if the Text is pressed on
+  /// [Function] callback function to perform if the Widget is pressed on
   final Function? onPressed;
 
   @override
