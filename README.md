@@ -90,7 +90,7 @@ Extending the two examples above, here's a version where both the `incoming` and
 
 
 ## Widget overview
-The library comprises of four main Widgets which all have their own purposed
+The library comprises of four main Widgets which all have their own purpose:
 - `WidgetAnimator` Animates any widget with effects such as opacity, offset, blur, skew, rotation, scale
   
 - `WidgetAnimatorSequence` Animates a list of `WidgetAnimator` either based on Time or a user pressing on the widget (or both)

@@ -1,3 +1,8 @@
+## 1.0.3 - 2022-04-22
+
+* Fix for where text was too long to fit on a line for a single word and truncated instead of wrapping
+* More documentation added
+
 ## 1.0.2 - 2022-04-20
 
 * Fixes to Pass static analysis

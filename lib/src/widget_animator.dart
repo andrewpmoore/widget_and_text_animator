@@ -825,6 +825,7 @@ class WidgetTransitionEffects {
 
   static Duration defaultDuration = const Duration(milliseconds: 300);
 
+  ///Widget transition effect constructor where a style is passed in
   @protected
   WidgetTransitionEffects.withStyle(
       {this.offset,
@@ -853,7 +854,7 @@ class WidgetTransitionEffects {
       this.builder})
       : style = WidgetTransitionEffectStyle.none;
 
-  ///Default scale transitions
+  ///Default scale for reducing scale from 3x down to the original size
   WidgetTransitionEffects.incomingScaleDown(
       {this.offset,
       this.opacity,
@@ -865,6 +866,8 @@ class WidgetTransitionEffects {
       this.duration})
       : scale = 3,
         style = WidgetTransitionEffectStyle.none;
+
+  ///Default scale for increasing scale from 0x size to 1x size
   WidgetTransitionEffects.incomingScaleUp(
       {this.offset,
       this.opacity,
@@ -876,6 +879,8 @@ class WidgetTransitionEffects {
       this.duration})
       : scale = 0,
         style = WidgetTransitionEffectStyle.none;
+
+  ///Scale down the text to 0 scale when outgoing
   WidgetTransitionEffects.outgoingScaleDown(
       {this.offset,
       this.opacity,
@@ -887,6 +892,8 @@ class WidgetTransitionEffects {
       this.duration})
       : scale = 0,
         style = WidgetTransitionEffectStyle.none;
+
+  ///Scale up the text to 3x scale when outgoing
   WidgetTransitionEffects.outgoingScaleUp(
       {this.offset,
       this.opacity,
@@ -899,7 +906,7 @@ class WidgetTransitionEffects {
       : scale = 3,
         style = WidgetTransitionEffectStyle.none;
 
-  ///Default slide transitions
+  ///Slide widget in from the left by 150 offset
   WidgetTransitionEffects.incomingSlideInFromLeft(
       {this.opacity,
       this.rotation,
@@ -911,6 +918,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(-150, 0),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget in from the right by 150 offset
   WidgetTransitionEffects.incomingSlideInFromRight(
       {this.opacity,
       this.rotation,
@@ -922,6 +931,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(150, 0),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget in from the top by 150 offset
   WidgetTransitionEffects.incomingSlideInFromTop(
       {this.opacity,
       this.rotation,
@@ -933,6 +944,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(0, -150),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget in from the bottom by 150 offset
   WidgetTransitionEffects.incomingSlideInFromBottom(
       {this.opacity,
       this.rotation,
@@ -944,6 +957,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(0, 150),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget out to the left by 150 offset
   WidgetTransitionEffects.outgoingSlideOutToLeft(
       {this.opacity,
       this.rotation,
@@ -955,6 +970,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(-150, 0),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget out to the right by 150 offset
   WidgetTransitionEffects.outgoingSlideOutToRight(
       {this.opacity,
       this.rotation,
@@ -966,6 +983,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(150, 0),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget out to the top by 150 offset
   WidgetTransitionEffects.outgoingSlideOutToTop(
       {this.opacity,
       this.rotation,
@@ -977,6 +996,8 @@ class WidgetTransitionEffects {
       this.duration})
       : offset = const Offset(0, -150),
         style = WidgetTransitionEffectStyle.none;
+
+  ///Slide widget out to the bottom by 150 offset
   WidgetTransitionEffects.outgoingSlideOutToBottom(
       {this.opacity,
       this.rotation,
@@ -989,7 +1010,7 @@ class WidgetTransitionEffects {
       : offset = const Offset(0, 150),
         style = WidgetTransitionEffectStyle.none;
 
-  ///Default style transitions
+  ///Move up into standard position and scale
   WidgetTransitionEffects.incomingOffsetThenScale({this.duration, this.delay})
       : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScale,
         rotation = 0,
@@ -999,6 +1020,8 @@ class WidgetTransitionEffects {
         offset = const Offset(0, 0),
         opacity = 1,
         curve = Curves.linear;
+
+  ///Move up slightly above standard position and scale, then jump down to standard location
   WidgetTransitionEffects.incomingOffsetThenScaleAndStep(
       {this.duration, this.delay})
       : style = WidgetTransitionEffectStyle.incomingOffsetAndThenScaleAndStep,
@@ -1009,6 +1032,8 @@ class WidgetTransitionEffects {
         offset = const Offset(0, 0),
         opacity = 1,
         curve = Curves.linear;
+
+  ///Move down and scale
   WidgetTransitionEffects.outgoingOffsetThenScale({this.duration, this.delay})
       : style = WidgetTransitionEffectStyle.outgoingOffsetAndThenScale,
         rotation = 0,
@@ -1075,6 +1100,7 @@ class WidgetRestingEffects {
   double? effectStrength;
   Duration? delay;
 
+  ///Default constructor for `at rest` animations
   WidgetRestingEffects(
       {this.style,
       this.builder,
@@ -1085,6 +1111,7 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay});
 
+  ///Constructor to wave the text up and down
   WidgetRestingEffects.wave(
       {this.builder,
       this.duration,
@@ -1094,6 +1121,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.wave;
+
+  ///Constructor to pulse the opacity of the widget
   WidgetRestingEffects.pulse(
       {this.builder,
       this.duration,
@@ -1103,6 +1132,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.pulse;
+
+  ///Constructor to rotate the widget
   WidgetRestingEffects.rotate(
       {this.builder,
       this.duration,
@@ -1112,6 +1143,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.rotate;
+
+  ///Constructor bounce the widget up and down
   WidgetRestingEffects.bounce(
       {this.builder,
       this.duration,
@@ -1121,6 +1154,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.bounce;
+
+  ///Constructor to slide the widget side-to-side with a skew effect
   WidgetRestingEffects.slide(
       {this.builder,
       this.duration,
@@ -1130,6 +1165,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.slide;
+
+  ///Constructor to swing the widget with rotation side-to-side
   WidgetRestingEffects.swing(
       {this.builder,
       this.duration,
@@ -1139,6 +1176,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.swing;
+
+  ///Constructor to scale up and down the size of the widget
   WidgetRestingEffects.size(
       {this.builder,
       this.duration,
@@ -1148,6 +1187,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.size;
+
+  ///Constructor randomly move the widget on the X and Y axis from its standard position
   WidgetRestingEffects.fidget(
       {this.builder,
       this.duration,
@@ -1157,6 +1198,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.fidget;
+
+  ///Constructor to dangle the widget using skew from the top of the widget
   WidgetRestingEffects.dangle(
       {this.builder,
       this.duration,
@@ -1166,6 +1209,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.dangle;
+
+  ///Constructor to randomly vibrate the widget position in a sudden stepped movement
   WidgetRestingEffects.vibrate(
       {this.builder,
       this.duration,
@@ -1175,6 +1220,8 @@ class WidgetRestingEffects {
       this.effectStrength,
       this.delay})
       : style = WidgetRestingEffectStyle.vibrate;
+
+  ///Constructor for no `at rest` effect
   WidgetRestingEffects.none(
       {this.builder,
       this.duration,

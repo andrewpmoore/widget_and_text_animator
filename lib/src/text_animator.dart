@@ -85,6 +85,7 @@ class _TextAnimatorState extends State<TextAnimator> {
     _initWords();
   }
 
+  ///initialise the words in the string by splitting them and calculating the delays for showing them
   void _initWords() {
     ///split the text into words
     _words.clear();
@@ -114,16 +115,16 @@ class _TextAnimatorState extends State<TextAnimator> {
     }
   }
 
+  ///mark as outgoing, this will force the animation to rebuild and trigger the outgoing text
   void _textChangedOutgoing() async {
-    ///mark as outgoing, this will force the animation to rebuild and trigger the outgoing text
     _outgoing = true;
     if (mounted) {
       setState(() {});
     }
   }
 
+  ///force a redraw and update the words array with the next set of words to use
   void _textChangedReplaced(Key? p1) async {
-    ///force a redraw and update the words array with the next set of words to use
     _outgoing = false;
     _text = widget.text;
     _initWords();
@@ -151,8 +152,7 @@ class _TextAnimatorState extends State<TextAnimator> {
           children: [
             for (int i = 0; i < _words.length; i++)
               WidgetSpan(
-                  child: Row(
-                mainAxisSize: MainAxisSize.min,
+                  child: Wrap(
                 children: [
                   for (int j = 0; j < (_words[i]).characters.length; j++)
                     WidgetAnimator(
@@ -176,7 +176,7 @@ class _TextAnimatorState extends State<TextAnimator> {
                             ? widget.onIncomingAnimationComplete
                             : null,
                         onOutgoingAnimationComplete: (_isLastCharacter(i, j))
-                            ? triggerLastOutgoingAnimation
+                            ? _triggerLastOutgoingAnimation
                             : null,
                         child: Text(
                           _words[i].characters.characterAt(j).string,
@@ -189,13 +189,13 @@ class _TextAnimatorState extends State<TextAnimator> {
         ));
   }
 
+  ///we need to know which is the last character animation to trigger on outgoing events to know when to switch over onto the next text
   _isLastCharacter(int i, int j) {
-    ///we need to know which is the last character animation to trigger on outgoing events to know when to switch over onto the next text
     return i == _words.length - 1 && j == _words[i].characters.length - 1;
   }
 
-  triggerLastOutgoingAnimation(Key? p1) {
-    ///when the last animation character triggers, now it's time to replace the text with the new incoming text
+  ///when the last animation character triggers, now it's time to replace the text with the new incoming text
+  _triggerLastOutgoingAnimation(Key? p1) {
     _textChangedReplaced(p1);
     if (widget.onOutgoingAnimationComplete != null) {
       widget.onOutgoingAnimationComplete!(p1);

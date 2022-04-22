@@ -103,6 +103,8 @@ class _TextAnimatorSequenceState extends State<TextAnimatorSequence> {
         ));
   }
 
+  ///get the next child in the list of children to change to, if set to loop then loop back to the start at the end
+  ///if not set to loop and at the end, return the current child
   int _getNextChild() {
     int nextChild = currentChildToRender + 1;
     if (nextChild >= widget.children.length) {
