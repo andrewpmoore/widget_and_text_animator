@@ -14,6 +14,7 @@ class Samples extends StatelessWidget {
     });
   }
 
+  ///Main menu for samples, each item staggered in coming into the screen using the `WidgetAnimator`
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -181,6 +182,7 @@ class Samples extends StatelessWidget {
   }
 }
 
+///A collection of `incoming` effects
 class SamplesIncoming extends StatefulWidget {
   const SamplesIncoming({Key? key}) : super(key: key);
 
@@ -197,6 +199,7 @@ class SamplesIncoming extends StatefulWidget {
 class _SamplesIncomingState extends State<SamplesIncoming> {
   int currentPage = 0;
 
+  ///a list of widgets to display for incoming effects
   List<Widget> widgetList = [
     Center(
       key: const ValueKey('1'),
@@ -651,6 +654,8 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
     )
   ];
 
+
+  ///build for incoming sample effects
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -733,6 +738,7 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
   }
 }
 
+///sample `outgoing` effects
 class SamplesOutgoing extends StatefulWidget {
   const SamplesOutgoing({Key? key}) : super(key: key);
 
@@ -777,6 +783,7 @@ class _SamplesOutgoingState extends State<SamplesOutgoing> {
     ];
   }
 
+  ///build method for showing list of outgoing effects
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -851,6 +858,7 @@ class _SamplesOutgoingState extends State<SamplesOutgoing> {
   }
 }
 
+///Outgoing effect - scale down example
 class _OutgoingScaleDown extends StatefulWidget {
   const _OutgoingScaleDown({Key? key}) : super(key: key);
 
@@ -897,6 +905,7 @@ class _OutgoingScaleDownState extends State<_OutgoingScaleDown> {
   }
 }
 
+///Outgoing effect - scale up example
 class _OutgoingScaleUp extends StatefulWidget {
   const _OutgoingScaleUp({Key? key}) : super(key: key);
 
@@ -943,6 +952,7 @@ class _OutgoingScaleUpState extends State<_OutgoingScaleUp> {
   }
 }
 
+///Outgoing effect - slide out left example
 class _OutgoingSlideOutLeft extends StatefulWidget {
   const _OutgoingSlideOutLeft({Key? key}) : super(key: key);
 
@@ -989,6 +999,7 @@ class _OutgoingSlideOutLeftState extends State<_OutgoingSlideOutLeft> {
   }
 }
 
+///Outgoing effect - slide out right example
 class _OutgoingSlideOutRight extends StatefulWidget {
   const _OutgoingSlideOutRight({Key? key}) : super(key: key);
 
@@ -1037,6 +1048,7 @@ class _OutgoingSlideOutRightState extends State<_OutgoingSlideOutRight> {
   }
 }
 
+///Outgoing effect - slide out top example
 class _OutgoingSlideOutTop extends StatefulWidget {
   const _OutgoingSlideOutTop({Key? key}) : super(key: key);
 
@@ -1085,6 +1097,7 @@ class _OutgoingSlideOutTopState extends State<_OutgoingSlideOutTop> {
   }
 }
 
+///Outgoing effect - slide out bottom example
 class _OutgoingSlideOutBottom extends StatefulWidget {
   const _OutgoingSlideOutBottom({Key? key}) : super(key: key);
 
@@ -1134,6 +1147,7 @@ class _OutgoingSlideOutBottomState extends State<_OutgoingSlideOutBottom> {
   }
 }
 
+///Outgoing effect - slide out bottom, but with a custom curve example
 class _OutgoingSlideOutBottomCustomCurve extends StatefulWidget {
   const _OutgoingSlideOutBottomCustomCurve({Key? key}) : super(key: key);
 
@@ -1186,6 +1200,7 @@ class _OutgoingSlideOutBottomCustomCurveState
   }
 }
 
+///Outgoing effect - rotate clockwise example
 class _OutgoingRotationClockwise extends StatefulWidget {
   const _OutgoingRotationClockwise({Key? key}) : super(key: key);
 
@@ -1233,6 +1248,7 @@ class _OutgoingRotationClockwiseState
   }
 }
 
+///Outgoing effect - rotate anti-clockwise example
 class _OutgoingRotationAntiClockwise extends StatefulWidget {
   const _OutgoingRotationAntiClockwise({Key? key}) : super(key: key);
 
@@ -1280,6 +1296,7 @@ class _OutgoingRotationAntiClockwiseState
   }
 }
 
+///Outgoing effect - skew on X axis example
 class _OutgoingSkewX extends StatefulWidget {
   const _OutgoingSkewX({Key? key}) : super(key: key);
 
@@ -1325,6 +1342,7 @@ class _OutgoingSkewXState extends State<_OutgoingSkewX> {
   }
 }
 
+///Outgoing effect - skew on Y axis example
 class _OutgoingSkewY extends StatefulWidget {
   const _OutgoingSkewY({Key? key}) : super(key: key);
 
@@ -1370,6 +1388,7 @@ class _OutgoingSkewYState extends State<_OutgoingSkewY> {
   }
 }
 
+///Outgoing effect - skew on X and Y axis example
 class _OutgoingSkewXY extends StatefulWidget {
   const _OutgoingSkewXY({Key? key}) : super(key: key);
 
@@ -1416,6 +1435,7 @@ class _OutgoingSkewXYState extends State<_OutgoingSkewXY> {
   }
 }
 
+///Outgoing effect - blur on the X axis example
 class _OutgoingBlurX extends StatefulWidget {
   const _OutgoingBlurX({Key? key}) : super(key: key);
 
@@ -1461,6 +1481,7 @@ class _OutgoingBlurXState extends State<_OutgoingBlurX> {
   }
 }
 
+///Outgoing effect - blur on the Y axis example
 class _OutgoingBlurY extends StatefulWidget {
   const _OutgoingBlurY({Key? key}) : super(key: key);
 
@@ -1506,6 +1527,7 @@ class _OutgoingBlurYState extends State<_OutgoingBlurY> {
   }
 }
 
+///Outgoing effect - blur on the X and Y axis example
 class _OutgoingBlurXY extends StatefulWidget {
   const _OutgoingBlurXY({Key? key}) : super(key: key);
 
@@ -1551,6 +1573,7 @@ class _OutgoingBlurXYState extends State<_OutgoingBlurXY> {
   }
 }
 
+///Outgoing effect - combination of effects example
 class _OutgoingCombination extends StatefulWidget {
   const _OutgoingCombination({Key? key}) : super(key: key);
 
@@ -1601,6 +1624,7 @@ class _OutgoingCombinationState extends State<_OutgoingCombination> {
   }
 }
 
+///Outgoing effect - offset and then scale example
 class _OutgoingOffsetThenScale extends StatefulWidget {
   const _OutgoingOffsetThenScale({Key? key}) : super(key: key);
 
@@ -1650,6 +1674,8 @@ class _OutgoingOffsetThenScaleState extends State<_OutgoingOffsetThenScale> {
   }
 }
 
+
+///Outgoing effect - using a custom builder example
 class _OutgoingCustomBuilder extends StatefulWidget {
   const _OutgoingCustomBuilder({Key? key}) : super(key: key);
 
@@ -1774,6 +1800,7 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
   }
 }
 
+///Collection of `at rest` examples
 class SamplesAtRest extends StatefulWidget {
   const SamplesAtRest({Key? key}) : super(key: key);
 
@@ -1790,6 +1817,7 @@ class SamplesAtRest extends StatefulWidget {
 class _SamplesAtRestState extends State<SamplesAtRest> {
   int currentPage = 0;
 
+  ///list of widgets for demonstrations
   List<Widget> widgetList = [
     Center(
       key: const ValueKey('1'),
@@ -2208,6 +2236,8 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
     )
   ];
 
+
+  ///build method for atRest samples
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -2290,6 +2320,7 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
   }
 }
 
+///Collection of `TextAnimtor` examples
 class SamplesText extends StatefulWidget {
   const SamplesText({Key? key}) : super(key: key);
 
@@ -2333,6 +2364,7 @@ class _SamplesTextState extends State<SamplesText> {
 
   final List<_SampleTextSettings> _settingsList = [];
 
+  ///create a list of examples in the intiState
   @override
   void initState() {
     super.initState();
@@ -2803,6 +2835,7 @@ class _SamplesTextState extends State<SamplesText> {
     ));
   }
 
+  ///standard build method for showing the `TextAnimator` examples
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -2898,6 +2931,7 @@ class _SamplesTextState extends State<SamplesText> {
   }
 }
 
+///Example of showing a sequence of widgets
 class _WidgetSequence extends StatefulWidget {
   const _WidgetSequence({Key? key}) : super(key: key);
 
@@ -2952,6 +2986,7 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
   }
 }
 
+///Sample widgets for sequence
 class _SequenceSampleWidgets extends StatelessWidget {
   const _SequenceSampleWidgets({Key? key}) : super(key: key);
 
@@ -3026,6 +3061,7 @@ class _SequenceSampleWidgets extends StatelessWidget {
   }
 }
 
+///Example text sequence for `TextAnimatorSequence` demo
 class _TextSequence extends StatefulWidget {
   const _TextSequence({Key? key}) : super(key: key);
 
@@ -3080,6 +3116,7 @@ class _TextSequenceState extends State<_TextSequence> {
   }
 }
 
+///Widgets for text sequence demo
 class _SequenceSampleText extends StatelessWidget {
   const _SequenceSampleText({Key? key}) : super(key: key);
 
@@ -3129,6 +3166,8 @@ class _SequenceSampleText extends StatelessWidget {
   }
 }
 
+
+///Example showing a combination of animation effects (breathing in and out)
 class _Fun extends StatefulWidget {
   const _Fun({Key? key}) : super(key: key);
 
@@ -3369,6 +3408,7 @@ class _FunState extends State<_Fun> {
   }
 }
 
+///Logo demo screen with animated text and widgets
 class _Fun2 extends StatefulWidget {
   const _Fun2({Key? key}) : super(key: key);
 
