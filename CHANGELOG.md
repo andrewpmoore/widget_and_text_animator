@@ -1,3 +1,7 @@
+## 1.0.5 - 2022-04-25
+
+* Description improvements
+
 ## 1.0.4 - 2022-04-25
 
 * Documentation improvements
