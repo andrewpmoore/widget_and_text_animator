@@ -654,7 +654,6 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
     )
   ];
 
-
   ///build for incoming sample effects
   @override
   Widget build(BuildContext context) {
@@ -1674,7 +1673,6 @@ class _OutgoingOffsetThenScaleState extends State<_OutgoingOffsetThenScale> {
   }
 }
 
-
 ///Outgoing effect - using a custom builder example
 class _OutgoingCustomBuilder extends StatefulWidget {
   const _OutgoingCustomBuilder({Key? key}) : super(key: key);
@@ -1720,12 +1718,14 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 1, end: 0.7)
                             .chain(CurveTween(curve: Curves.easeInOut)),
-                        weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.7).clamp(0.0001, double.minPositive),
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0.7, end: 0)
                             .chain(CurveTween(curve: Curves.linear)),
-                        weight: (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.3).clamp(0.0001, double.minPositive),
                       ),
                     ],
                   ).animate(CurvedAnimation(
@@ -1742,12 +1742,14 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0, end: 0)
                             .chain(CurveTween(curve: Curves.easeIn)),
-                        weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.7).clamp(0.0001, double.minPositive),
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0, end: 50)
                             .chain(CurveTween(curve: Curves.easeOut)),
-                        weight: (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.3).clamp(0.0001, double.minPositive),
                       ),
                     ],
                   ).animate(CurvedAnimation(
@@ -1764,12 +1766,14 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 1, end: 0.8)
                             .chain(CurveTween(curve: Curves.fastOutSlowIn)),
-                        weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.7).clamp(0.0001, double.minPositive),
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0.8, end: 4)
                             .chain(CurveTween(curve: Curves.ease)),
-                        weight: (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight:
+                            (duration * 0.3).clamp(0.0001, double.minPositive),
                       ),
                     ],
                   ).animate(CurvedAnimation(
@@ -2235,7 +2239,6 @@ class _SamplesAtRestState extends State<SamplesAtRest> {
       ),
     )
   ];
-
 
   ///build method for atRest samples
   @override
@@ -3165,7 +3168,6 @@ class _SequenceSampleText extends StatelessWidget {
     );
   }
 }
-
 
 ///Example showing a combination of animation effects (breathing in and out)
 class _Fun extends StatefulWidget {

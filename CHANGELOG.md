@@ -1,3 +1,7 @@
+## 1.0.7 - 2022-05-23
+
+* Style improvements to match dart standard
+
 ## 1.0.6 - 2022-05-23
 
 * Extra checks to make sure Tween weights are not set to zero
