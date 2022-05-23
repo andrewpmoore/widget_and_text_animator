@@ -1,6 +1,6 @@
 name: widget_and_text_animator
 description: Make animating widgets a breeze with much less code and many effects built in. In addition, make Text animations beautiful with staggered text effects. transitions, blurs & more.
-version: 1.0.5
+version: 1.0.6
 homepage: https://github.com/andrewpmoore/widget_and_text_animator
 
 environment:

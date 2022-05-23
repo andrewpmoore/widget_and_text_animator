@@ -20,12 +20,12 @@ class AnimationOutgoingTransitionOffsetAndScale
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 1, end: 1)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
             tween: Tween<double>(begin: 1, end: 0)
                 .chain(CurveTween(curve: Curves.easeInOut)),
-            weight: duration),
+            weight: duration.clamp(0.0001, double.minPositive)),
       ],
     ).animate(
         CurvedAnimation(parent: animationController, curve: Curves.linear));
@@ -36,17 +36,17 @@ class AnimationOutgoingTransitionOffsetAndScale
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 0, end: 0)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0, end: 0)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.3,
+          weight: (duration * 0.3).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0, end: 70)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.7,
+          weight: (duration * 0.7).clamp(0.0001, double.minPositive),
         ),
       ],
     ).animate(
@@ -58,17 +58,17 @@ class AnimationOutgoingTransitionOffsetAndScale
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 1, end: 1)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1, end: 1.2)
               .chain(CurveTween(curve: Curves.linear)),
-          weight: duration * 0.3,
+          weight: (duration * 0.3).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.2)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.7,
+          weight: (duration * 0.7).clamp(0.0001, double.minPositive),
         ),
       ],
     ).animate(

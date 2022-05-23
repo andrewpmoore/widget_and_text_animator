@@ -20,27 +20,27 @@ class AnimationIncomingTransitionOffsetAndScaleAndStep
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 0, end: 0)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0, end: 1)
               .chain(CurveTween(curve: Curves.easeInOut)),
-          weight: duration * 0.3,
+          weight: (duration * 0.3).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1, end: 1)
               .chain(CurveTween(curve: Curves.linear)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1, end: 1)
               .chain(CurveTween(curve: Curves.linear)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1, end: 1)
               .chain(CurveTween(curve: Curves.linear)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
       ],
     ).animate(
@@ -52,27 +52,27 @@ class AnimationIncomingTransitionOffsetAndScaleAndStep
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 0, end: 0)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 50, end: -5)
               .chain(CurveTween(curve: Curves.easeIn)),
-          weight: duration * 0.3,
+          weight: (duration * 0.3).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: -5, end: -5)
               .chain(CurveTween(curve: Curves.easeOut)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: -5, end: -5)
               .chain(CurveTween(curve: Curves.easeOut)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: -5, end: 0)
               .chain(CurveTween(curve: Curves.fastLinearToSlowEaseIn)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
       ],
     ).animate(
@@ -84,27 +84,27 @@ class AnimationIncomingTransitionOffsetAndScaleAndStep
           TweenSequenceItem<double>(
             tween: Tween<double>(begin: 0, end: 0)
                 .chain(CurveTween(curve: Curves.linear)),
-            weight: delay,
+            weight: delay.clamp(0.0001, double.minPositive),
           ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.2)
               .chain(CurveTween(curve: Curves.linear)),
-          weight: duration * 0.3,
+          weight: (duration * 0.3).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.2)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1, end: 1)
               .chain(CurveTween(curve: Curves.ease)),
-          weight: duration * 0.2,
+          weight: (duration * 0.2).clamp(0.0001, double.minPositive),
         ),
       ],
     ).animate(

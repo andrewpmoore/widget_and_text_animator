@@ -1,3 +1,7 @@
+## 1.0.6 - 2022-05-23
+
+* Extra checks to make sure Tween weights are not set to zero
+
 ## 1.0.5 - 2022-04-25
 
 * Description improvements
