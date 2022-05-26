@@ -1,3 +1,8 @@
+
+## 1.0.9 - 2022-05-26
+
+* Fix for https://github.com/andrewpmoore/widget_and_text_animator/issues/4 (outgoing animation delay is ignored)
+
 ## 1.0.8 - 2022-05-26
 
 * Fix for some animations not working
