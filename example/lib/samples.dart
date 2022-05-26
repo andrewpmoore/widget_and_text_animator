@@ -564,22 +564,22 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
                     TweenSequenceItem<double>(
                       tween: Tween<double>(begin: 0, end: 0)
                           .chain(CurveTween(curve: Curves.linear)),
-                      weight: delay.clamp(0.0001, double.minPositive),
+                      weight: delay,
                     ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0, end: 0.7)
                         .chain(CurveTween(curve: Curves.easeInOut)),
-                    weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.7,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0.7, end: 1)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.15).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.15,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 1, end: 1)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.15).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.15,
                   ),
                 ],
               ).animate(CurvedAnimation(
@@ -591,22 +591,22 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
                     TweenSequenceItem<double>(
                       tween: Tween<double>(begin: 0, end: 0)
                           .chain(CurveTween(curve: Curves.linear)),
-                      weight: delay.clamp(0.0001, double.minPositive),
+                      weight: delay,
                     ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 100, end: 0)
                         .chain(CurveTween(curve: Curves.easeIn)),
-                    weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.7,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0, end: 0)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.3).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.3,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0, end: 0)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.15).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.15,
                   ),
                 ],
               ).animate(CurvedAnimation(
@@ -618,22 +618,22 @@ class _SamplesIncomingState extends State<SamplesIncoming> {
                     TweenSequenceItem<double>(
                       tween: Tween<double>(begin: 0, end: 0)
                           .chain(CurveTween(curve: Curves.linear)),
-                      weight: delay.clamp(0.0001, double.minPositive),
+                      weight: delay,
                     ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0.5, end: 0.9)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.7).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.7,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0.9, end: 0.9)
                         .chain(CurveTween(curve: Curves.linear)),
-                    weight: (duration * 0.3).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.3,
                   ),
                   TweenSequenceItem<double>(
                     tween: Tween<double>(begin: 0.9, end: 1)
                         .chain(CurveTween(curve: Curves.easeInOut)),
-                    weight: (duration * 0.15).clamp(0.0001, double.minPositive),
+                    weight: duration * 0.15,
                   ),
                 ],
               ).animate(CurvedAnimation(
@@ -1713,19 +1713,17 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                         TweenSequenceItem<double>(
                           tween: Tween<double>(begin: 0, end: 0)
                               .chain(CurveTween(curve: Curves.linear)),
-                          weight: delay.clamp(0.0001, double.minPositive),
+                          weight: delay,
                         ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 1, end: 0.7)
                             .chain(CurveTween(curve: Curves.easeInOut)),
-                        weight:
-                            (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.7,
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0.7, end: 0)
                             .chain(CurveTween(curve: Curves.linear)),
-                        weight:
-                            (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.3,
                       ),
                     ],
                   ).animate(CurvedAnimation(
@@ -1737,19 +1735,17 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                         TweenSequenceItem<double>(
                           tween: Tween<double>(begin: 0, end: 0)
                               .chain(CurveTween(curve: Curves.linear)),
-                          weight: delay.clamp(0.0001, double.minPositive),
+                          weight: delay,
                         ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0, end: 0)
                             .chain(CurveTween(curve: Curves.easeIn)),
-                        weight:
-                            (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.7,
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0, end: 50)
                             .chain(CurveTween(curve: Curves.easeOut)),
-                        weight:
-                            (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.3,
                       ),
                     ],
                   ).animate(CurvedAnimation(
@@ -1761,19 +1757,17 @@ class _OutgoingCustomBuilderState extends State<_OutgoingCustomBuilder> {
                         TweenSequenceItem<double>(
                           tween: Tween<double>(begin: 0, end: 0)
                               .chain(CurveTween(curve: Curves.easeInOut)),
-                          weight: delay.clamp(0.0001, double.minPositive),
+                          weight: delay,
                         ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 1, end: 0.8)
                             .chain(CurveTween(curve: Curves.fastOutSlowIn)),
-                        weight:
-                            (duration * 0.7).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.7,
                       ),
                       TweenSequenceItem<double>(
                         tween: Tween<double>(begin: 0.8, end: 4)
                             .chain(CurveTween(curve: Curves.ease)),
-                        weight:
-                            (duration * 0.3).clamp(0.0001, double.minPositive),
+                        weight: duration * 0.3,
                       ),
                     ],
                   ).animate(CurvedAnimation(

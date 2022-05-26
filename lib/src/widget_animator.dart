@@ -245,16 +245,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
             TweenSequenceItem<double>(
               tween: Tween<double>(begin: 0, end: 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: 0, end: 1)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -267,16 +263,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.scale ?? 0,
                       end: incomingEffect.scale ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.scale ?? 1, end: 1)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -289,17 +281,13 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.offset?.dx ?? 0,
                       end: incomingEffect.offset?.dx ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween:
                   Tween<double>(begin: incomingEffect.offset?.dx ?? 0, end: 0)
                       .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -312,17 +300,13 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.offset?.dy ?? 0,
                       end: incomingEffect.offset?.dy ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween:
                   Tween<double>(begin: incomingEffect.offset?.dy ?? 0, end: 0)
                       .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -335,16 +319,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.rotation ?? 0,
                       end: incomingEffect.rotation ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.rotation ?? 0, end: 0)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -357,16 +337,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.blur?.dx ?? 0,
                       end: incomingEffect.blur?.dx ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.blur?.dx ?? 0, end: 0)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -379,16 +355,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.blur?.dy ?? 0,
                       end: incomingEffect.blur?.dy ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.blur?.dy ?? 0, end: 0)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -401,16 +373,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.skew?.dx ?? 0,
                       end: incomingEffect.skew?.dx ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.skew?.dx ?? 0, end: 0)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));
@@ -423,16 +391,12 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                       begin: incomingEffect.skew?.dy ?? 0,
                       end: incomingEffect.skew?.dy ?? 0)
                   .chain(CurveTween(curve: Curves.ease)),
-              weight: incomingDelay.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive),
+              weight: incomingDelay.inMilliseconds.toDouble(),
             ),
           TweenSequenceItem<double>(
               tween: Tween<double>(begin: incomingEffect.skew?.dy ?? 0, end: 0)
                   .chain(CurveTween(curve: incomingCurve)),
-              weight: incomingDuration.inMilliseconds
-                  .toDouble()
-                  .clamp(0.0001, double.minPositive)),
+              weight: incomingDuration.inMilliseconds.toDouble()),
         ],
       ).animate(
           CurvedAnimation(parent: _animationController, curve: Curves.linear));

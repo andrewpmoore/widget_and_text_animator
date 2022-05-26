@@ -1,3 +1,7 @@
+## 1.0.8 - 2022-05-26
+
+* Fix for some animations not working
+
 ## 1.0.7 - 2022-05-23
 
 * Style improvements to match dart standard
