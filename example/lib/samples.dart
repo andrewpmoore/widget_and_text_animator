@@ -2956,8 +2956,8 @@ class _WidgetSequenceState extends State<_WidgetSequence> {
         appBar: AppBar(
           title: const Text('Widget sequence'),
         ),
-        body: Column(
-          children: const [
+        body: const Column(
+          children: [
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -3086,8 +3086,8 @@ class _TextSequenceState extends State<_TextSequence> {
         appBar: AppBar(
           title: const Text('Text sequence'),
         ),
-        body: Column(
-          children: const [
+        body: const Column(
+          children: [
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -3656,9 +3656,8 @@ class _Fun2State extends State<_Fun2> {
                                                                   .offsetYAnimation =
                                                               TweenSequence<
                                                                   double>(
-                                                            <
-                                                                TweenSequenceItem<
-                                                                    double>>[
+                                                            <TweenSequenceItem<
+                                                                double>>[
                                                               TweenSequenceItem<
                                                                   double>(
                                                                 tween: Tween<
@@ -3694,9 +3693,8 @@ class _Fun2State extends State<_Fun2> {
                                                                   .rotationAnimation =
                                                               TweenSequence<
                                                                   double>(
-                                                            <
-                                                                TweenSequenceItem<
-                                                                    double>>[
+                                                            <TweenSequenceItem<
+                                                                double>>[
                                                               TweenSequenceItem<
                                                                   double>(
                                                                 tween: Tween<

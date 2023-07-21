@@ -389,6 +389,59 @@ child: Container(
 <img src="https://andrewpmoore.github.io/widget_and_text_animator_example/gifs/custom.gif"  height="100%" width="100%"/>
 
 
+
+
+## `GestureAnimator`
+This widget can be used as a direct replacement for the `GestureDetector`. It only covers basic `onTap` gestures, but allows you to animate effects on the widget pressed with just a few properties:
+
+| property                             | description                                                                                                                                                                                           | default          |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
+| `duration`                           | The [Duration] of the animation                                                                                                                                                                       | 150 milliseconds |
+| `curve`                              | The animation curve to use                                                                                                                                                                            | `Curves.linear`  |
+| `scaleSize`                          | The size to reduce or increase by when the gesture is triggered                                                                                                                                       | `0.9`            |
+| `yOffset`                            | The amount of pixels to offset up or down the screen                                                                                                                                                  | `0`              |
+| `xOffset`                            | The amount of pixels to offset across the screen                                                                                                                                                      | `0`              |
+| `blurX`                              | The amount of blur on the `x` axis to apply to the child                                                                                                                                              | `0`              |
+| `blurY`                              | The amount of blur on the `y` axis to apply to the child                                                                                                                                              | `0`              |
+| `skewX`                              | The amount of skew on the `x` axis to apply to the child                                                                                                                                              | `0`              |
+| `skewY`                              | The amount of skew on the `y` axis to apply to the child                                                                                                                                              | `0`              |
+| `rotation`                           | The amount to rotate the child widget when the gesture is triggered                                                                                                                                   | `0`              |
+| `opacity`                            | The amount of opacity to trigger when the gesture is triggered                                                                                                                                        | `0`              |
+| `hapticFeedback`                     | The haptic feedback style to trigger when the gesture is triggered, this is useful if using `triggerOnTapAfterAnimationComplete` otherwise doing the haptic feedback in the `onTap` will seem delayed | `null`           | 
+| `triggerOnTapAfterAnimationComplete` | Delay triggering the `onTap` callback until after the animation has played, otherwise you may not see much of the animation if navigating to another page                                             | `false`          |
+| `onTap`                              | The code to call when a user taps on the widget                                                                                                                                                       | `null`           |
+| `child`                              | The child widget to render                                                                                                                                                                            | `null`           |
+
+Here's a basic example of some text within a container using the `TextAnimator` to make the text wave up and down with a delay between each character
+
+```dart
+  return GestureAnimator(
+    curve: Curves.easeInOut,
+    scaleSize: 0.9,
+    yOffset: -5,
+    duration: const Duration(milliseconds: 150),
+    // blurX: 2,
+    // blurY: 2,
+    // numberOfPlays: 4,
+    // rotation: pi / 16,
+    // skewX: 0.2,
+    opacity: 0.8,
+    hapticFeedback: HapticFeedback.selectionClick,   
+    triggerOnTapAfterAnimationComplete: true,
+    onTap: (){
+      Navigator.of(context).push(Samples.route());
+    },
+    child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(color: Colors.green, child: const Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Text('Do not push me!'),
+      ),),
+   ),);
+```
+
+
+
 ## Give me more!
 For more examples check out the [example](https://github.com/andrewpmoore/widget_and_text_animator/tree/main/example) project on github.
 

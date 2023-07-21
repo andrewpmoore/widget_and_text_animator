@@ -772,6 +772,7 @@ class _WidgetAnimatorState extends State<WidgetAnimator>
                   offsetY: _animationSettings.offsetYAnimation!.value,
                   child: _OptionalScale(
                     scale: _animationSettings.scaleAnimation!.value,
+                    alignment: _animationSettings.scaleAlignment!,
                     child: _OptionalOpacity(
                       opacity: _animationSettings.opacityAnimation!.value,
                       child: childToDisplay ?? const SizedBox(),
@@ -892,14 +893,17 @@ class _OptionalRotate extends StatelessWidget {
 class _OptionalScale extends StatelessWidget {
   final Widget child;
   final double scale;
+  final Alignment? alignment;
 
-  const _OptionalScale({Key? key, required this.child, required this.scale})
+  const _OptionalScale(
+      {Key? key, required this.child, required this.scale, this.alignment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (scale != 1) {
       return Transform.scale(
+        alignment: alignment ?? Alignment.center,
         scale: scale,
         child: child,
       );
@@ -1402,4 +1406,260 @@ class WidgetRestingEffects {
       numberOfPlays.hashCode ^
       effectStrength.hashCode ^
       delay.hashCode;
+}
+
+class GestureAnimator extends StatefulWidget {
+  const GestureAnimator({
+    Key? key,
+    this.duration = const Duration(milliseconds: 150),
+    this.onTap,
+    this.triggerOnTapAfterAnimationComplete = false,
+    this.child,
+    this.scaleSize = 0.9,
+    this.xOffset = 0,
+    this.yOffset = 0,
+    this.blurX = 0,
+    this.blurY = 0,
+    this.opacity = 1,
+    this.skewX = 0,
+    this.skewY = 0,
+    this.rotation = 0,
+    this.numberOfPlays = 1,
+    this.curve = Curves.linear,
+    this.hapticFeedback,
+  }) : super(key: key);
+
+  /// Adjust the animation speed
+  ///
+  /// Defaults to [150]
+  final Duration duration;
+
+  /// Called when the user taps this part of the material.
+  final VoidCallback? onTap;
+
+  /// The widget below this widget in the tree.
+  final Widget? child;
+
+  /// The scale size change for the animation 1 being no change, 0.8 being smaller, 1.2 being bigger
+  ///
+  /// defaults to 0.9
+  final double scaleSize;
+
+  /// The amount of x offset to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no x offset
+  final double xOffset;
+
+  /// The amount of y offset to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no offset
+  final double yOffset;
+
+  /// The amount of x blur to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no blur
+  final double blurX;
+
+  /// The amount of y blur to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no blur
+  final double blurY;
+
+  /// The amount of opacity to apply on the gesture being triggered
+  ///
+  /// defaults to 1, no opacity, 0 would be full opacity
+  final double opacity;
+
+  /// The amount of x skew to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no skew
+  final double skewX;
+
+  /// The amount of y skew to apply on the gesture being triggered
+  ///
+  /// defaults to 0, no skew
+  final double skewY;
+
+  /// The amount to rotate the widget on the gesture being triggered
+  ///
+  /// defaults to 0, no rotation, an example would be `pi / 2` to turn 180 degrees clockwise
+  final double rotation;
+
+  ///The animation curve to play,
+  ///
+  /// default is a linear curve
+  final Curve curve;
+
+  /// the number of times the animation should play once triggered
+  ///
+  /// defaults to 1
+  final int numberOfPlays;
+
+  ///Only trigger on the onTap callback once the animation has completed
+  ///
+  /// defaults to false
+  final bool triggerOnTapAfterAnimationComplete;
+
+  ///Haptic feedback on devices where supported, this allows the feedback to
+  ///when the press happens as the onTap callback may be set to trigger only after the animation
+  ///is complete if `triggerOnTapAfterAnimationComplete` is set
+  ///
+  /// Defaults to no feedback, an example would be `HapticFeedback.selectionClick`
+  final Future<void> Function()? hapticFeedback;
+
+  @override
+  _GestureAnimatorState createState() => _GestureAnimatorState();
+}
+
+class _GestureAnimatorState extends State<GestureAnimator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late AnimationSettings _animationSettings;
+  int numberPlayed = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ///initialise the animation controller
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: widget.duration.inMilliseconds),
+      vsync: this,
+    );
+    _animationSettings =
+        AnimationSettings(animationController: _animationController);
+    _animationSettings.opacityAnimation =
+        Tween<double>(begin: 1, end: widget.opacity).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.scaleAnimation =
+        Tween<double>(begin: 1, end: widget.scaleSize).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.offsetXAnimation =
+        Tween<double>(begin: 0, end: widget.xOffset).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.offsetYAnimation =
+        Tween<double>(begin: 0, end: widget.yOffset).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.rotationAnimation =
+        Tween<double>(begin: 0, end: widget.rotation).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.blurXAnimation =
+        Tween<double>(begin: 0, end: widget.blurX).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.blurYAnimation =
+        Tween<double>(begin: 0, end: widget.blurY).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.skewXAnimation =
+        Tween<double>(begin: 0, end: widget.skewX).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+    _animationSettings.skewYAnimation =
+        Tween<double>(begin: 0, end: widget.skewY).animate(
+            CurvedAnimation(parent: _animationController, curve: widget.curve));
+
+    _addAnimationListener();
+  }
+
+  void _addAnimationListener() {
+    // if (status == AnimationStatus.completed) {
+    //   ///increment the number of times an animation at rest has played
+    //   atRestNumberOfPlays++;
+    //   int target = widget.atRestEffect?.numberOfPlays ?? 0;
+    //
+    //   ///work out whether the animation needs to repeat and if it has, whether it's yet reached it's numberOfPlays
+    //   if (target <= 0) {
+    //     //if it's set to -1, then repeat forever
+    //     _animationController.forward(from: 0);
+    //   } else if (atRestNumberOfPlays < target) {
+    //     _animationController.forward(from: 0);
+    //   } else {
+    //     // print('this one plays no more $childToDisplay');
+    //   }
+    // }
+
+    int target = widget.numberOfPlays;
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.reverse();
+      }
+      // if (status == AnimationStatus.forward) {
+      // print('animation forward');
+      // }
+      // if (status == AnimationStatus.reverse) {
+      // print('animation reverse');
+      // }
+      if (status == AnimationStatus.dismissed) {
+        // print('animation dismissed');
+
+        numberPlayed++;
+        // print('animation complete');
+        if (target <= 0) {
+          //if it's set to -1, then repeat forever
+          _animationController.forward(from: 0);
+        } else if (numberPlayed < target) {
+          _animationController.forward(from: 0);
+        } else if (widget.triggerOnTapAfterAnimationComplete &&
+            widget.onTap != null) {
+          // print('triggerOnTap');
+          widget.onTap!();
+          // print('triggerOnTapDone');
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return GestureDetector(
+            onTapDown: (_) {
+              if (widget.hapticFeedback != null) {
+                widget.hapticFeedback!();
+              }
+              numberPlayed = 0;
+              _animationController.forward();
+            },
+            // onTapUp: (_) {
+            //
+            // },
+            onTapCancel: () {
+              _animationController.reverse();
+            },
+            onTap:
+                widget.triggerOnTapAfterAnimationComplete ? null : widget.onTap,
+            child: _OptionalFiltered(
+              blurX: _animationSettings.blurXAnimation!.value,
+              blurY: _animationSettings.blurYAnimation!.value,
+              child: _OptionalRotate(
+                angle: _animationSettings.rotationAnimation!.value,
+                child: _OptionalSkew(
+                  alignment: _animationSettings.skewAlignment,
+                  skewX: _animationSettings.skewXAnimation!.value,
+                  skewY: _animationSettings.skewYAnimation!.value,
+                  child: _OptionalTranslate(
+                    offsetX: _animationSettings.offsetXAnimation!.value,
+                    offsetY: _animationSettings.offsetYAnimation!.value,
+                    child: _OptionalScale(
+                      scale: _animationSettings.scaleAnimation!.value,
+                      alignment: _animationSettings.scaleAlignment!,
+                      child: _OptionalOpacity(
+                        opacity: _animationSettings.opacityAnimation!.value,
+                        child: widget.child ?? const SizedBox(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
 }

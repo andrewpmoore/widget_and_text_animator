@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'samples.dart';
@@ -64,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    print('start stuff here');
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -100,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextAnimator(
               'You have pushed the button this many times:',
               atRestEffect: WidgetRestingEffects.pulse(effectStrength: 0.6),
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.bodyMedium,
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromTop(
                   blur: const Offset(0, 20), scale: 2),
               textAlign: TextAlign.center,
@@ -110,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextAnimator(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.bodyLarge,
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(
                   curve: Curves.bounceOut,
                   duration: const Duration(milliseconds: 1500)),
@@ -135,7 +137,49 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(
               height: 20,
-            )
+            ),
+            WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects(
+                  delay: const Duration(milliseconds: 1500),
+                  offset: const Offset(0, 30),
+                  curve: Curves.easeInOut,
+                  duration: const Duration(milliseconds: 1200)),
+              child: GestureAnimator(
+                curve: Curves.easeInOut,
+                scaleSize: 0.9,
+                yOffset: -5,
+                duration: const Duration(milliseconds: 150),
+                // blurX: 2,
+                // blurY: 2,
+                numberOfPlays: 1,
+                // rotation: pi / 16,
+                opacity: 0.8,
+                // skewX: 0.2,
+                hapticFeedback: HapticFeedback.selectionClick,
+                triggerOnTapAfterAnimationComplete: true,
+                onTap: () {
+                  Navigator.of(context).push(Samples.route());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Text(
+                        'GestureAnimator',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

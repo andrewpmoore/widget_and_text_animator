@@ -13,6 +13,7 @@ class AnimationSettings {
   Animation<double>? skewXAnimation;
   Animation<double>? skewYAnimation;
   Alignment? skewAlignment;
+  Alignment? scaleAlignment;
 
   AnimationSettings(
       {required AnimationController animationController,
@@ -23,6 +24,7 @@ class AnimationSettings {
       this.blurXAnimation,
       this.blurYAnimation,
       this.rotationAnimation,
+      this.scaleAlignment,
       this.skewAlignment,
       this.skewXAnimation,
       this.skewYAnimation}) {
@@ -45,5 +47,6 @@ class AnimationSettings {
     skewYAnimation = Tween<double>(begin: 0, end: 0).animate(
         CurvedAnimation(parent: animationController, curve: Curves.linear));
     skewAlignment = Alignment.center;
+    scaleAlignment = Alignment.center;
   }
 }
