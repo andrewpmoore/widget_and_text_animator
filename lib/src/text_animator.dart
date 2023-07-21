@@ -95,6 +95,7 @@ class _TextAnimatorState extends State<TextAnimator> {
     for (var element in temp) {
       _words.add(element = '$element ');
     }
+    _words.last = _words.last.trim();
 
     ///calculate the delays between each incoming character and store
     Duration delay = const Duration(milliseconds: 0);
