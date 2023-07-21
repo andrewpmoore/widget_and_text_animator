@@ -4,7 +4,7 @@
 # change changelog.md
 # change line 13 readme.md
 # dart format .
-# flutter pub global run pana
+# dart pub publish --dry-run
 # flutter pub publish
 
 
@@ -36,8 +36,8 @@ flutter:
 
 screenshots:
   - description: 'WidgetAnimator sample'
-    path: https://andrewpmoore.github.io/widget_and_text_animator_example/gifs/wave.gif
+    path: wave.gif
   - description: 'TextAnimator sample'
-    path: https://andrewpmoore.github.io/widget_and_text_animator_example/gifs/text_sample.gif
+    path: text_sample.gif
   - description: 'Widget sequence sample'
-    path: https://andrewpmoore.github.io/widget_and_text_animator_example/gifs/widget_sequence.gif
+    path: widget_sequence.gif
