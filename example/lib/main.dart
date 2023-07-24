@@ -149,6 +149,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 scaleSize: 0.9,
                 yOffset: -5,
                 duration: const Duration(milliseconds: 150),
+                onLongPress: (){
+                  print('on long press triggered');
+                },
+                onTapDown: (_){
+                  print('on tap down');
+                },
+                onTapUp: (_){
+                  print('on tap up');
+                },
+
                 // blurX: 2,
                 // blurY: 2,
                 numberOfPlays: 1,

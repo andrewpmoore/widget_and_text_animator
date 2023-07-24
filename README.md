@@ -20,7 +20,7 @@ See a [live preview](https://andrewpmoore.github.io/widget_and_text_animator_exa
 
 ```yaml
 # add this line to your dependencies
-widget_and_text_animator: ^1.0.9
+widget_and_text_animator: ^1.1.5
 ```
 
 ```dart

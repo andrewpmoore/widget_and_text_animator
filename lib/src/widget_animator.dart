@@ -1438,16 +1438,17 @@ class GestureAnimator extends StatefulWidget {
   final Duration duration;
 
   /// Called when the user taps this widget.
-  final GestureTapCallback? onTap;
+  final VoidCallback? onTap;
+
 
   /// Called when the user long presses on this widget.
-  final GestureLongPressCallback? onLongPress;
+  final VoidCallback? onLongPress;
 
   /// Called when the user long presses on this widget.
-  final GestureTapDownCallback? onTapDown;
+  final Function(TapDownDetails details)? onTapDown;
 
   /// Called when the user stops tapping on this widget.
-  final GestureTapUpCallback? onTapUp;
+  final Function(TapUpDetails details)? onTapUp;
 
   /// The widget below this widget in the tree.
   final Widget? child;

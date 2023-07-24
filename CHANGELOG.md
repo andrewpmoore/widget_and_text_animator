@@ -1,3 +1,7 @@
+## 1.1.5 - 2023-07-24
+ 
+* Bug fixes
+
 ## 1.1.4 - 2023-07-24
 
 * Updated screenshots
