@@ -1413,6 +1413,9 @@ class GestureAnimator extends StatefulWidget {
     Key? key,
     this.duration = const Duration(milliseconds: 150),
     this.onTap,
+    this.onTapDown,
+    this.onTapUp,
+    this.onLongPress,
     this.triggerOnTapAfterAnimationComplete = false,
     this.child,
     this.scaleSize = 0.9,
@@ -1434,8 +1437,17 @@ class GestureAnimator extends StatefulWidget {
   /// Defaults to [150]
   final Duration duration;
 
-  /// Called when the user taps this part of the material.
-  final VoidCallback? onTap;
+  /// Called when the user taps this widget.
+  final GestureTapCallback? onTap;
+
+  /// Called when the user long presses on this widget.
+  final GestureLongPressCallback? onLongPress;
+
+  /// Called when the user long presses on this widget.
+  final GestureTapDownCallback? onTapDown;
+
+  /// Called when the user stops tapping on this widget.
+  final GestureTapUpCallback? onTapUp;
 
   /// The widget below this widget in the tree.
   final Widget? child;
@@ -1620,19 +1632,30 @@ class _GestureAnimatorState extends State<GestureAnimator>
         animation: _animationController,
         builder: (context, child) {
           return GestureDetector(
-            onTapDown: (_) {
+            onTapDown: (details) {
+              if (widget.onTapDown!=null){
+                widget.onTapDown!(details);
+              }
               if (widget.hapticFeedback != null) {
                 widget.hapticFeedback!();
               }
               numberPlayed = 0;
               _animationController.forward();
             },
-            // onTapUp: (_) {
-            //
-            // },
+            onTapUp: (details){
+              if (widget.onTapUp!=null){
+                widget.onTapUp!(details);
+              }
+            },
+            onLongPress: (){
+              if (widget.onLongPress!=null){
+                widget.onLongPress!();
+              }
+            },
             onTapCancel: () {
               _animationController.reverse();
             },
+
             onTap:
                 widget.triggerOnTapAfterAnimationComplete ? null : widget.onTap,
             child: _OptionalFiltered(

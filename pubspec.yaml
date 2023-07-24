@@ -5,12 +5,12 @@
 # change line 13 readme.md
 # dart format .
 # dart pub publish --dry-run
-# dart pub publish
+# repository:
 
 
 name: widget_and_text_animator
 description: Make animating widgets a breeze with many effects built in. Make Text animations beautiful with staggered text effects. transitions, blurs & more, animate gestures too
-version: 1.1.2
+version: 1.1.3
 homepage: https://github.com/andrewpmoore/widget_and_text_animator
 
 environment:
@@ -35,6 +35,8 @@ flutter:
 
 
 screenshots:
+  - description: 'Header'
+    path: logo.gif
   - description: 'WidgetAnimator sample'
     path: wave.gif
   - description: 'TextAnimator sample'

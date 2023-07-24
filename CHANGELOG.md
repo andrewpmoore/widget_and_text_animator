@@ -1,3 +1,8 @@
+## 1.1.3 - 2023-07-24
+
+* Added `onLongPress`, `onLongPress` and `onTapUp` to `GestureAnimator`
+
+
 ## 1.1.2 - 2023-07-21
 
 * Fix for https://github.com/andrewpmoore/widget_and_text_animator/issues/5
@@ -5,7 +10,6 @@
 ## 1.1.1 - 2023-07-21
 
 * Bug fixes
-
 
 ## 1.1.0 - 2023-07-21
 
