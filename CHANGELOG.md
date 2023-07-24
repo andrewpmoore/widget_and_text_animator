@@ -1,3 +1,8 @@
+## 1.1.4 - 2023-07-24
+
+* Updated screenshots
+
+
 ## 1.1.3 - 2023-07-24
 
 * Added `onLongPress`, `onLongPress` and `onTapUp` to `GestureAnimator`

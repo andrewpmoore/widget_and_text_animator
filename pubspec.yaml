@@ -36,7 +36,7 @@ flutter:
 
 screenshots:
   - description: 'Widget and text animator sample'
-    path: logo.gif
+    path: title.png
   - description: 'WidgetAnimator sample'
     path: wave.gif
   - description: 'TextAnimator sample'
