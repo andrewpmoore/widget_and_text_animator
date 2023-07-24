@@ -5,7 +5,7 @@
 # change line 13 readme.md
 # dart format .
 # dart pub publish --dry-run
-# repository:
+# dart pub publish
 
 
 name: widget_and_text_animator
@@ -35,7 +35,7 @@ flutter:
 
 
 screenshots:
-  - description: 'Header'
+  - description: 'Widget and text animator sample'
     path: logo.gif
   - description: 'WidgetAnimator sample'
     path: wave.gif
